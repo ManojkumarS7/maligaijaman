@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'payment_selectionPage.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class PaymentPage extends StatefulWidget {
   final Map<String, dynamic> selectedAddress;
@@ -147,7 +148,7 @@ class _PaymentPageState extends State<PaymentPage> {
     }
 
     final url = Uri.parse(
-        "https://maligaijaman.rdegi.com/api/cart.php?jwt=$_jwt&secretkey=$_secretKey");
+        "${Appconfig.baseurl}api/cart.php?jwt=$_jwt&secretkey=$_secretKey");
 
     try {
       final response = await http.get(url);

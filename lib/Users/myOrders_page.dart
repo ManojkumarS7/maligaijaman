@@ -7,6 +7,7 @@ import 'cart_page.dart';
 import 'wishlist_screen.dart';
 import 'profile_page.dart';
 import 'order_DetailScreen.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class MyOrdersScreen extends StatefulWidget {
   const MyOrdersScreen({Key? key}) : super(key: key);
@@ -45,7 +46,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
       }
 
       final url = Uri.parse(
-          "https://maligaijaman.rdegi.com/api/conformorder.php?jwt=$jwt&secretkey=$secretKey");
+          "${Appconfig.baseurl}api/conformorder.php?jwt=$jwt&secretkey=$secretKey");
 
       final response = await http.get(url).timeout(
         const Duration(seconds: 15),

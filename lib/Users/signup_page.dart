@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import '../main.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -74,7 +75,7 @@ class _SignupPageState extends State<SignupPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('https://maligaijaman.rdegi.com/api/signinotp.php'),
+        Uri.parse('${Appconfig.baseurl}api/signinotp.php'),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {'email': email},
       );
@@ -206,7 +207,7 @@ class _SignupPageState extends State<SignupPage> {
       // Create a multipart request to match form-data format
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('https://maligaijaman.rdegi.com/api/signupapi.php'),
+        Uri.parse('${Appconfig.baseurl}api/signupapi.php'),
       );
 
       // Add form fields

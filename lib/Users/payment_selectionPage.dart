@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_upi_payment/easy_upi_payment.dart';
 import 'cardPayment_page.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class PaymentOptionsPage extends StatefulWidget {
   final Map<String, dynamic> selectedAddress;
@@ -109,7 +110,7 @@ class _PaymentOptionsPageState extends State<PaymentOptionsPage> {
       if (widget.isFromCart) {
         // If from cart, use the cart confirmation endpoint
         final url = Uri.parse(
-            "https://maligaijaman.rdegi.com/api/addcart_confirm.php");
+            "${Appconfig.baseurl}api/addcart_confirm.php");
 
         var request = http.MultipartRequest('POST', url);
 
@@ -132,7 +133,7 @@ class _PaymentOptionsPageState extends State<PaymentOptionsPage> {
       } else {
         // Direct product purchase - use the original endpoint
         final url = Uri.parse(
-            "https://maligaijaman.rdegi.com/api/conformorderinsert.php");
+            "${Appconfig.baseurl}api/conformorderinsert.php");
 
         // Direct product purchase - post each product individually
         for (var product in widget.productDetails) {

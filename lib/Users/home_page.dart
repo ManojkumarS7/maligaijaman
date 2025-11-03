@@ -15,6 +15,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:maligaijaman/ProfileOption_page.dart';
 import 'myOrders_page.dart';
+import 'package:maligaijaman/apiconstants.dart';
+
 
 
 class UserProfile {
@@ -292,7 +294,8 @@ class _HomeScreenState extends State<HomeScreen> {
     print('hello user');
     final String? userid = await _storage.read(key: 'user_id');
     final uri =
-    Uri.parse('https://maligaijaman.rdegi.com/api/profile.php?id=$userid');
+    // Uri.parse('https://maligaijaman.rdegi.com/api/profile.php?id=$userid');
+    Uri.parse("${Appconfig.baseurl}api/profile.php?id=$userid");
     final response = await http.get(uri);
     print(uri);
 
@@ -310,7 +313,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<List<dynamic>> fetchCategories() async {
     final url = Uri.parse(
-        "https://maligaijaman.rdegi.com/api/categorylist.php");
+        "${Appconfig.baseurl}api/categorylist.php");
+
+    print(url);
     try {
       final response = await http.get(url);
 
@@ -338,7 +343,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<List<dynamic>> fetchRandomProducts() async {
-    final url = Uri.parse("https://maligaijaman.rdegi.com/api/productlist.php");
+    final url = Uri.parse("${Appconfig.baseurl}api/productlist.php");
     try {
       final response = await http.get(url);
 
@@ -369,7 +374,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<List<dynamic>> fetchAllProducts() async {
-    final url = Uri.parse("https://maligaijaman.rdegi.com/api/productlist.php");
+    final url = Uri.parse("${Appconfig.baseurl}api/productlist.php");
     try {
       final response = await http.get(url);
 
@@ -413,7 +418,7 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       // Fetch and search products
       final productUrl = Uri.parse(
-          "https://maligaijaman.rdegi.com/api/productlist.php");
+          "${Appconfig.baseurl}api/productlist.php");
 
       final productResponse = await http.get(productUrl).timeout(
           const Duration(seconds: 10),
@@ -450,7 +455,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       // Fetch and search categories
       final categoryUrl = Uri.parse(
-          "https://maligaijaman.rdegi.com/api/categorylist.php");
+          "${Appconfig.baseurl}api/categorylist.php");
 
       final categoryResponse = await http.get(categoryUrl).timeout(
           const Duration(seconds: 10),
@@ -493,7 +498,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<List<dynamic>> fetchOffers() async {
     final url = Uri.parse(
-        "https://maligaijaman.rdegi.com/api/offer_list.php");
+        "${Appconfig.baseurl}api/offer_list.php");
     try {
       final response = await http.get(url);
 
@@ -585,91 +590,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
-  // Widget buildTopTile(BuildContext context) {
-  //   return Container(
-  //     decoration: BoxDecoration(
-  //       color: const Color.fromRGBO(85, 139, 47, 1),
-  //       border: const Border(
-  //         bottom: BorderSide(color: Colors.white, width: 1),
-  //       ),
-  //     ),
-  //     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: [
-  //         Row(
-  //           children: [
-  //             ClipRRect(
-  //               borderRadius: BorderRadius.circular(8),
-  //               child: Image.asset(
-  //                 'assets/logo2.png',
-  //                 width: 40,
-  //                 height: 40,
-  //                 fit: BoxFit.cover,
-  //                 errorBuilder: (context, error, stackTrace) {
-  //                   return Container(
-  //                     width: 40,
-  //                     height: 40,
-  //                     decoration: BoxDecoration(
-  //                       color: Colors.white,
-  //                       borderRadius: BorderRadius.circular(8),
-  //                     ),
-  //                     child: const Icon(
-  //                       Icons.shopping_bag,
-  //                       color: Color.fromRGBO(85, 139, 47, 1),
-  //                       size: 24,
-  //                     ),
-  //                   );
-  //                 },
-  //               ),
-  //             ),
-  //             const SizedBox(width: 8),
-  //             const Text(
-  //               "Maligaijamaan",
-  //               style: TextStyle(
-  //                 color: Colors.white,
-  //                 fontWeight: FontWeight.w800,
-  //                 fontSize: 18,
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //         GestureDetector(
-  //           onTap: () async {
-  //             // Navigate to profile options
-  //             await Navigator.push(
-  //               context,
-  //               MaterialPageRoute(
-  //                 builder: (context) => const ProfileOptionsScreen(),
-  //               ),
-  //             );
-  //             // Reload profile when returning from profile options
-  //             _loadUserProfile();
-  //           },
-  //           child: Row(
-  //             children: [
-  //               if (_isLoggedIn)
-  //                 Icon(
-  //                   Icons.account_circle,
-  //                   color: Colors.white,
-  //                   size: 20,
-  //                 ),
-  //               const SizedBox(width: 4),
-  //               Text(
-  //                 _displayName,
-  //                 style: const TextStyle(
-  //                   color: Colors.white,
-  //                   fontWeight: FontWeight.w800,
-  //                   fontSize: 18,
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+
 
 
   Widget MidTile(BuildContext context) {

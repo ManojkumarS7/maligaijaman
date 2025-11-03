@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:maligaijaman/apiconstants.dart';
 
 class Category {
   final String id;
@@ -115,7 +116,7 @@ class _AddSubCategoryPageState extends State<AddSubCategoryPage> {
       // Create a multipart request
       final request = http.MultipartRequest(
         'POST',
-        Uri.parse('https://maligaijaman.rdegi.com/api/add_subcategory.php'),
+        Uri.parse('${Appconfig.baseurl}api/add_subcategory.php'),
       );
 
       // Add text fields

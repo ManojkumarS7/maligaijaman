@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'adminAddCategory_page.dart';
 import 'admin_categorydetail.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class AdminCategoryListScreen extends StatefulWidget {
   const AdminCategoryListScreen({Key? key}) : super(key: key);
@@ -53,7 +54,7 @@ class _AdminCategoryListScreenState extends State<AdminCategoryListScreen> {
     });
 
     try {
-      final url = Uri.parse("https://maligaijaman.rdegi.com/api/categorylist.php");
+      final url = Uri.parse("${Appconfig.baseurl}api/categorylist.php");
       final response = await http.get(url);
 
       if (response.statusCode == 200) {

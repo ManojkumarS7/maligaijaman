@@ -8,6 +8,7 @@ import 'package:maligaijaman/Vendors/vendor_Storeinfo_Page.dart';
 import '../Users/login_page.dart';
 import 'vendor_detailspage.dart';
 import '../Users/about_page.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class VendorProfile {
 
@@ -92,7 +93,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
     try {
       final response = await http.get(
         Uri.parse(
-            'https://maligaijaman.rdegi.com/api/vendor_profile.php?jwt=$jwt&secretkey=$secretKey'),
+            '${Appconfig.baseurl}api/vendor_profile.php?jwt=$jwt&secretkey=$secretKey'),
       );
 
       print('Response status: ${response.statusCode}');

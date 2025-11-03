@@ -205,6 +205,7 @@ import 'admin_dashboard.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maligaijaman/ProfileOption_page.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class AdminLoginScreen extends StatefulWidget {
   const AdminLoginScreen({super.key});
@@ -247,7 +248,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
         'password': password,
       };
 
-      final url = Uri.parse('https://maligaijaman.rdegi.com/api/adminloginapi.php');
+      final url = Uri.parse('${Appconfig.baseurl}api/adminloginapi.php');
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},

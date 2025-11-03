@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:maligaijaman/apiconstants.dart';
 
 class CategoryDetailPage extends StatefulWidget {
   final Map<String, dynamic> category;
@@ -90,7 +91,7 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
     try {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse("https://maligaijaman.rdegi.com/api/update_category.php"),
+        Uri.parse("${Appconfig.baseurl}api/update_category.php"),
       );
 
       // Add text fields
@@ -131,7 +132,7 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
   Future<void> deleteCategory() async {
     try {
       final url = Uri.parse(
-          "https://maligaijaman.rdegi.com/api/delete_category.php");
+          "${Appconfig.baseurl}api/delete_category.php");
       final response = await http.post(
         url,
         body: {

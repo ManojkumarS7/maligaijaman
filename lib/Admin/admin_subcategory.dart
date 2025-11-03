@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:maligaijaman/Admin/adminAddSubCate_page.dart';
 import 'package:maligaijaman/Admin/admin_subcatdetail.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class AdminSubCategoryListScreen extends StatefulWidget {
   const AdminSubCategoryListScreen({Key? key}) : super(key: key);
@@ -45,7 +46,7 @@ class _AdminSubCategoryListScreenState
       _isLoading = true;
     });
     final url =
-    Uri.parse("https://maligaijaman.rdegi.com/api/subcategory_list.php");
+    Uri.parse("${Appconfig.baseurl}api/subcategory_list.php");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {

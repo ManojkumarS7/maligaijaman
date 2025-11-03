@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'productdetail_page.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class OfferPage extends StatefulWidget {
   final String offerId;
@@ -55,7 +56,7 @@ class _OfferPageState extends State<OfferPage> {
 
     try {
       final url = Uri.parse(
-          "https://maligaijaman.rdegi.com/api/productlist.php");
+          "${Appconfig.baseurl}api/productlist.php");
       final response = await http.get(url).timeout(
         const Duration(seconds: 10),
         onTimeout: () {
@@ -122,7 +123,7 @@ class _OfferPageState extends State<OfferPage> {
     }
 
     try {
-      final url = Uri.parse('https://maligaijaman.rdegi.com/api/cart_insert.php');
+      final url = Uri.parse('${Appconfig.baseurl}api/cart_insert.php');
       final Map<String, dynamic> requestBody = {
         'secretkey': _secretKey,
         'jwt': _jwt,

@@ -10,6 +10,7 @@ import 'about_page.dart';
 import 'refer_friendPage.dart';
 import 'feedback_Page.dart';
 import 'edit_profile_page.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class UserProfile {
   final String id;
@@ -90,7 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   Future<UserProfile> fetchUserProfile() async {
     final String? userid = await _storage.read(key: 'user_id');
     final uri =
-    Uri.parse('https://maligaijaman.rdegi.com/api/profile.php?id=$userid');
+    Uri.parse('${Appconfig.baseurl}api/profile.php?id=$userid');
     final response = await http.get(uri);
 
     if (response.statusCode == 200 && response.body.isNotEmpty) {

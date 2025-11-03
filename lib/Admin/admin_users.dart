@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'adminAddUser_page.dart';
 import 'admin_userdetail.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class AdminUsers extends StatefulWidget {
   @override
@@ -26,7 +27,7 @@ class _AdminUserPageState extends State<AdminUsers> {
       isLoading = true;
     });
 
-    final url = Uri.parse("https://maligaijaman.rdegi.com/api/user_list.php");
+    final url = Uri.parse("${Appconfig.baseurl}api/user_list.php");
 
     try {
       final response = await http.get(url);

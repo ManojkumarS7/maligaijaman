@@ -9,6 +9,7 @@ import '../main.dart';
 import 'wishlist_screen.dart';
 import 'profile_page.dart';
 import 'home_page.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -72,7 +73,7 @@ class _CartScreenState extends State<CartScreen> {
     }
 
     final url = Uri.parse(
-        "https://maligaijaman.rdegi.com/api/cart.php?jwt=$_jwt&secretkey=$_secretKey");
+        "${Appconfig.baseurl}api/cart.php?jwt=$_jwt&secretkey=$_secretKey");
     print(url);
 
     try {
@@ -116,7 +117,7 @@ class _CartScreenState extends State<CartScreen> {
 
       // Make the API call to remove the item from the server
       final url = Uri.parse(
-          'https://maligaijaman.rdegi.com/api/deletecart.php');
+          '${Appconfig.baseurl}api/deletecart.php');
       final Map<String, dynamic> requestBody = {
         'id': productId,
       };
@@ -230,7 +231,7 @@ class _CartScreenState extends State<CartScreen> {
 
       // Prepare API call to update quantity on server
       final url = Uri.parse(
-          'https://maligaijaman.rdegi.com/api/update_cart.php');
+          '${Appconfig.baseurl}api/update_cart.php');
       final Map<String, dynamic> requestBody = {
         'secretkey': _secretKey,
         'jwt': _jwt,

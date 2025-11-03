@@ -12,6 +12,7 @@ import '../main.dart';
 import 'cart_page.dart';
 import 'wishlist_screen.dart';
 import 'profile_page.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class AddressViewScreen extends StatefulWidget {
   const AddressViewScreen({Key? key}) : super(key: key);
@@ -61,7 +62,7 @@ class _AddressViewScreenState extends State<AddressViewScreen> {
     });
 
     try {
-      final url = Uri.parse('https://maligaijaman.rdegi.com/api/addressget.php?jwt=$_jwt&secretkey=$_secretKey');
+      final url = Uri.parse('${Appconfig.baseurl}api/addressget.php?jwt=$_jwt&secretkey=$_secretKey');
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
@@ -227,7 +228,7 @@ class _AddressViewScreenState extends State<AddressViewScreen> {
     });
 
     try {
-      final url = Uri.parse('https://maligaijaman.rdegi.com/api/delete_address.php');
+      final url = Uri.parse('${Appconfig.baseurl}api/delete_address.php');
       final response = await http.post(
         url,
         body: {
@@ -764,8 +765,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
     try {
       final url = Uri.parse(widget.isEditing
-          ? 'https://maligaijaman.rdegi.com/api/update_address.php'
-          : 'https://maligaijaman.rdegi.com/api/addressinsert.php');
+          ? '${Appconfig.baseurl}api/update_address.php'
+          : '${Appconfig.baseurl}api/addressinsert.php');
 
       final Map<String, dynamic> bodyData = {
         'jwt': widget.jwt,

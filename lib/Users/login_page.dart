@@ -12,6 +12,7 @@ import '../main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'forgotPassword_Page.dart';
 import 'home_page.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class LoginScreen extends StatefulWidget {
   final bool returnToProductPage;
@@ -63,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
         'password': password,
       };
 
-      final url = Uri.parse('https://maligaijaman.rdegi.com/api/loginapi.php');
+      final url = Uri.parse('${Appconfig.baseurl}api/loginapi.php');
       final response = await http.post(
         url,
         headers: {

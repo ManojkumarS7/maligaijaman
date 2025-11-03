@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:maligaijaman/apiconstants.dart';
 
 class Category {
   final String id;
@@ -75,7 +76,7 @@ class _AddProductsPageState extends State<AddProductsPage> {
 
   Future<void> fetchCategories() async {
     final url = Uri.parse(
-        "https://maligaijaman.rdegi.com/api/categorylist.php");
+        "${Appconfig.baseurl}api/categorylist.php");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -103,7 +104,7 @@ class _AddProductsPageState extends State<AddProductsPage> {
 
   Future<void> fetchSubCategories() async {
     final url = Uri.parse(
-        "https://maligaijaman.rdegi.com/api/subcategory_list.php");
+        "${Appconfig.baseurl}api/subcategory_list.php");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {

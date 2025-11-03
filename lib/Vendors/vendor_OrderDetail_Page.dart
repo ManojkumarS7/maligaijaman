@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:maligaijaman/Users/Orderstatus_page.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class VendorOrderDetailPage extends StatefulWidget {
   final String orderId;
@@ -44,7 +45,7 @@ class _VendorOrderDetailPageState extends State<VendorOrderDetailPage> {
       }
 
       final url = Uri.parse(
-          "https://maligaijaman.rdegi.com/api/vendor_order_list.php?vendor_id=$vendorId");
+          "${Appconfig.baseurl}api/vendor_order_list.php?vendor_id=$vendorId");
 
       final response = await http.get(url).timeout(
         const Duration(seconds: 15),

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart'; // For image picking
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class AdminProductDetailPage extends StatefulWidget {
   final String productId;
@@ -126,7 +127,7 @@ class _AdminProductDetailPageState extends State<AdminProductDetailPage> {
   }
 
   Future<void> _fetchProductDetail() async {
-    final url = Uri.parse("https://maligaijaman.rdegi.com/api/edit_product.php?id=${widget.productId}");
+    final url = Uri.parse("${Appconfig.baseurl}api/edit_product.php?id=${widget.productId}");
 
     try {
       final response = await http.get(url);
@@ -161,7 +162,7 @@ class _AdminProductDetailPageState extends State<AdminProductDetailPage> {
       _error = null;
     });
 
-    final url = Uri.parse("https://maligaijaman.rdegi.com/api/categorylist.php");
+    final url = Uri.parse("${Appconfig.baseurl}api/categorylist.php");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -192,7 +193,7 @@ class _AdminProductDetailPageState extends State<AdminProductDetailPage> {
       _error = null;
     });
 
-    final url = Uri.parse("https://maligaijaman.rdegi.com/api/subcategory_list.php");
+    final url = Uri.parse("${Appconfig.baseurl}api/subcategory_list.php");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -254,7 +255,7 @@ class _AdminProductDetailPageState extends State<AdminProductDetailPage> {
     try {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse("https://maligaijaman.rdegi.com/api/update_product.php"),
+        Uri.parse("${Appconfig.baseurl}api/update_product.php"),
       );
 
       // Add text fields
@@ -316,7 +317,7 @@ class _AdminProductDetailPageState extends State<AdminProductDetailPage> {
 
   Future<void> _deleteProduct() async {
     try {
-      final url = Uri.parse("https://maligaijaman.rdegi.com/api/delete_product.php");
+      final url = Uri.parse("${Appconfig.baseurl}api/delete_product.php");
       final response = await http.post(
         url,
         body: {

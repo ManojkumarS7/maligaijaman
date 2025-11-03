@@ -6,6 +6,7 @@ import 'package:maligaijaman/Users/login_page.dart';
 import '../main.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);
@@ -65,7 +66,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     setState(() => _isLoading = true);
     try {
       final response = await http.post(
-        Uri.parse('https://maligaijaman.rdegi.com/api/mail.php'),
+        Uri.parse('${Appconfig.baseurl}api/mail.php'),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {'username': email},
       );
@@ -146,7 +147,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('https://maligaijaman.rdegi.com/api/forgetpassword.php'),
+        Uri.parse('${Appconfig.baseurl}api/forgetpassword.php'),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {'username': email, 'password': newPassword},
       );

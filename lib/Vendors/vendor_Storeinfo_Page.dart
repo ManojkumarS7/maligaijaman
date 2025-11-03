@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class StoreCategory {
   final String id;
@@ -106,7 +107,7 @@ class _VendorStoreInfoPageState extends State<VendorStoreInfoPage> {
     });
 
     final url = Uri.parse(
-        "https://maligaijaman.rdegi.com/api/categorylist.php");
+        "${Appconfig.baseurl}api/categorylist.php");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -162,7 +163,7 @@ class _VendorStoreInfoPageState extends State<VendorStoreInfoPage> {
 
       // Construct the URL with query parameters
       final url = Uri.parse(
-        'https://maligaijaman.rdegi.com/api/store_list.php?jwt=$jwt&secretkey=$secretKey',
+        '${Appconfig.baseurl}api/store_list.php?jwt=$jwt&secretkey=$secretKey',
       );
 
       print('Fetching from URL: $url');
@@ -242,7 +243,7 @@ class _VendorStoreInfoPageState extends State<VendorStoreInfoPage> {
                       .toString()
                       .isNotEmpty) {
                     _existingLogoUrl =
-                    'https://maligaijaman.rdegi.com/uploads/store_logos/${storeData['logo']}';
+                    '${Appconfig.baseurl}uploads/store_logos/${storeData['logo']}';
                   }
 
                   // Handle categories
@@ -411,7 +412,7 @@ class _VendorStoreInfoPageState extends State<VendorStoreInfoPage> {
 
       // Send POST request
       final response = await http.post(
-        Uri.parse('https://maligaijaman.rdegi.com/api/add_vendor.php'),
+        Uri.parse('${Appconfig.baseurl}api/add_vendor.php'),
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },

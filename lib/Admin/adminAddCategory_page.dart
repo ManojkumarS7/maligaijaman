@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:maligaijaman/apiconstants.dart';
 
 class AddCategoryPage extends StatefulWidget {
   @override
@@ -60,7 +61,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
       final String description = descriptionController.text.trim();
 
       // Create multipart request
-      final url = Uri.parse('https://maligaijaman.rdegi.com/api/insert_category.php');
+      final url = Uri.parse('${Appconfig.baseurl}api/insert_category.php');
       final request = http.MultipartRequest('POST', url);
 
       // Add text fields

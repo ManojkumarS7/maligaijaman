@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import '../main.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:maligaijaman/Users/home_page.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 
 class AdminSignupPage extends StatefulWidget {
@@ -46,7 +47,7 @@ class _AdminSignupPageState extends State<AdminSignupPage> {
         'name' : name
       };
 
-      final url = Uri.parse('https://maligaijaman.rdegi.com/api/adminsignup.php');
+      final url = Uri.parse('${Appconfig.baseurl}api/adminsignup.php');
       final response = await http.post(
         url,
         headers: {

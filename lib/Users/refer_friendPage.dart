@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../main.dart';
 import 'home_page.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class ReferFriendScreen extends StatefulWidget {
   const ReferFriendScreen({Key? key}) : super(key: key);

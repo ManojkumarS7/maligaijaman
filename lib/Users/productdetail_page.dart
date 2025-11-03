@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'adress_Viewpage.dart';
 import '../main.dart';
 import 'home_page.dart';import 'package:flutter/services.dart'; // For Clipboard
+import 'package:maligaijaman/apiconstants.dart';
 
 
 class Review {
@@ -140,7 +141,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
 // 3. Separate the server call into its own method:
   Future<List<Review>> _fetchReviewsFromServer() async {
-    final url = Uri.parse('https://maligaijaman.rdegi.com/api/review.php');
+    final url = Uri.parse('${Appconfig.baseurl}api/review.php');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -190,7 +191,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     try {
       final url = Uri.parse(
-          'https://maligaijaman.rdegi.com/api/review_insert.php');
+          '${Appconfig.baseurl}api/review_insert.php');
       final Map<String, dynamic> requestBody = {
         'product_id': widget.productId,
         'username': _username,
@@ -264,7 +265,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     try {
       final url = Uri.parse(
-          'https://maligaijaman.rdegi.com/api/cart_insert.php');
+          '${Appconfig.baseurl}api/cart_insert.php');
       final Map<String, dynamic> requestBody = {
         'secretkey': _secretKey,
         'jwt': _jwt,

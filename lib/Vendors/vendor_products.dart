@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:maligaijaman/Admin/admin_productdetail.dart';
 // import '../Admin/adminAddProducts_page.dart';
 import 'package:maligaijaman/Vendors/vendor_addProducts.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class VendorProductListScreen extends StatefulWidget {
   const VendorProductListScreen({Key? key}) : super(key: key);
@@ -102,7 +103,7 @@ class _VendorProductListScreenState extends State<VendorProductListScreen> {
       _isLoading = true;
     });
 
-    final url = Uri.parse("https://maligaijaman.rdegi.com/api/productlist.php");
+    final url = Uri.parse("${Appconfig.baseurl}api/productlist.php");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {

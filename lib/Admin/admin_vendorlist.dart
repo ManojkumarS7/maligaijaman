@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 void main() {
   runApp(const MyApp());
@@ -177,7 +178,7 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
       isLoadingCategories = true;
     });
 
-    final url = Uri.parse("https://maligaijaman.rdegi.com/api/categorylist.php");
+    final url = Uri.parse("${Appconfig.baseurl}api/categorylist.php");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {

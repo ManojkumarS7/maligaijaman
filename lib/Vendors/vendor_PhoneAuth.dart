@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../main.dart';
 import 'vendor_dashboard.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class VendorPhoneAuthScreen extends StatefulWidget {
   final bool returnToProductPage;
@@ -36,7 +37,7 @@ class _VendorPhoneAuthScreenState extends State<VendorPhoneAuthScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('https://maligaijaman.rdegi.com/otp/vendor-otp.php'),
+        Uri.parse('${Appconfig.baseurl}otp/vendor-otp.php'),
         // Uri.parse('https://cabnew.staging-rdegi.com/otp/check-otp.php'),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {'phone': phone},

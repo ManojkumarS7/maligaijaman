@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:maligaijaman/Users/orderSuccess_page.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class CardPaymentScreen extends StatefulWidget {
   final Map<String, dynamic>? selectedAddress;
@@ -151,7 +152,7 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
     try {
       if (widget.isFromCart == true) {
         final url = Uri.parse(
-            "https://maligaijaman.rdegi.com/api/addcart_confirm.php");
+            "${Appconfig.baseurl}api/addcart_confirm.php");
 
         var request = http.MultipartRequest('POST', url);
         request.fields['user_id'] = _userid ?? '';
@@ -167,7 +168,7 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
         }
       } else {
         final url = Uri.parse(
-            "https://maligaijaman.rdegi.com/api/conformorderinsert.php");
+            "${Appconfig.baseurl}api/conformorderinsert.php");
 
         for (var product in widget.productDetails!) {
           var request = http.MultipartRequest('POST', url);

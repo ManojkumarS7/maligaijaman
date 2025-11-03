@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../main.dart';
 import 'home_page.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({Key? key}) : super(key: key);
@@ -109,7 +110,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     try {
       // In a real app, this would be a call to your backend API
       final response = await http.post(
-        Uri.parse('https://maligaijaman.rdegi.com/api/feedback.php'),
+        Uri.parse('${Appconfig.baseurl}api/feedback.php'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           // 'user_id': _userId ?? 'guest',

@@ -9,6 +9,7 @@ import 'cart_page.dart';
 import 'wishlist_screen.dart';
 import 'profile_page.dart';
 import 'home_page.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class ProductListScreen extends StatefulWidget {
   final String categoryId;
@@ -118,7 +119,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
   }
 
   Future<List<dynamic>> fetchProducts(String categoryId) async {
-    final url = Uri.parse("https://maligaijaman.rdegi.com/api/productlist.php");
+    final url = Uri.parse("${Appconfig.baseurl}api/productlist.php");
     try {
       final response = await http.get(url);
 
@@ -157,7 +158,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
       return; // Exit the function early
     }
     try {
-      final url = Uri.parse('https://maligaijaman.rdegi.com/api/cart_insert.php');
+      final url = Uri.parse('${Appconfig.baseurl}api/cart_insert.php');
       final Map<String, dynamic> requestBody = {
         'secretkey': _secretKey,
         'jwt': _jwt,
@@ -221,7 +222,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
     }
 
     try {
-      final url = Uri.parse('https://maligaijaman.com/api/get_wishlist.php');
+      final url = Uri.parse('${Appconfig.baseurl}api/get_wishlist.php');
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -276,8 +277,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
     try {
       final url = Uri.parse(isCurrentlyWishlisted
-          ? 'https://maligaijaman.com/api/delete_wishlist.php'
-          : 'https://maligaijaman.com/api/wishlist_insert.php');
+          ? '${Appconfig.baseurl}api/delete_wishlist.php'
+          : '${Appconfig.baseurl}api/wishlist_insert.php');
 
       final Map<String, dynamic> requestBody;
 

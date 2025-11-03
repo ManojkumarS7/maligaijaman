@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class Category {
   final String id;
@@ -78,7 +79,7 @@ class _VendorAddProductsPageState extends State<VendorAddProductsPage> {
   }
 
   Future<void> fetchCategories() async {
-    final url = Uri.parse("https://maligaijaman.rdegi.com/api/categorylist.php");
+    final url = Uri.parse("${Appconfig.baseurl}api/categorylist.php");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -105,7 +106,7 @@ class _VendorAddProductsPageState extends State<VendorAddProductsPage> {
   }
 
   Future<void> fetchSubCategories() async {
-    final url = Uri.parse("https://maligaijaman.rdegi.com/api/subcategory_list.php");
+    final url = Uri.parse("${Appconfig.baseurl}api/subcategory_list.php");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -192,7 +193,7 @@ class _VendorAddProductsPageState extends State<VendorAddProductsPage> {
         throw Exception("Vendor ID not found. Please login again.");
       }
 
-      final url = Uri.parse('https://maligaijaman.rdegi.com/api/add_product.php');
+      final url = Uri.parse('${Appconfig.baseurl}api/add_product.php');
       final request = http.MultipartRequest('POST', url);
 
       // Include vendor_id in request

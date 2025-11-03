@@ -7,6 +7,7 @@ import '../Users/cart_page.dart';
 import '../Users/wishlist_screen.dart';
 import '../Users/profile_page.dart';
 import 'vendor_OrderDetail_Page.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 
 class VendorOrdersScreen extends StatefulWidget {
@@ -47,7 +48,7 @@ class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
       }
 
       final url = Uri.parse(
-          "https://maligaijaman.rdegi.com/api/vendor_order_list.php?vendor_id=$vendorId");
+          "${Appconfig.baseurl}api/vendor_order_list.php?vendor_id=$vendorId");
 
       final response = await http.get(url).timeout(
         const Duration(seconds: 15),
@@ -365,7 +366,7 @@ class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
 
       // Create the URL for the API endpoint
       final url = Uri.parse(
-          "https://maligaijaman.rdegi.com/api/update_order_status.php");
+          "${Appconfig.baseurl}pi/update_order_status.php");
 
       // Create the request body
       Map<String, String> requestBody = {

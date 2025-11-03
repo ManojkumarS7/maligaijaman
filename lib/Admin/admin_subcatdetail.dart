@@ -5,6 +5,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class AdminSubCategoryDetail extends StatefulWidget {
   final String subCategoryId;
@@ -52,7 +54,7 @@ class _AdminSubCategoryDetailState extends State<AdminSubCategoryDetail> {
       _error = null;
     });
 
-    final url = Uri.parse("https://maligaijaman.rdegi.com/api/categorylist.php");
+    final url = Uri.parse("${Appconfig.baseurl}api/categorylist.php");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -146,7 +148,7 @@ class _AdminSubCategoryDetailState extends State<AdminSubCategoryDetail> {
     try {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse("https://maligaijaman.rdegi.com/api/update_subcategory.php"),
+        Uri.parse("${Appconfig.baseurl}api/update_subcategory.php"),
       );
 
       // Add text fields
@@ -187,7 +189,7 @@ class _AdminSubCategoryDetailState extends State<AdminSubCategoryDetail> {
 
   Future<void> _deleteSubCategory() async {
     try {
-      final url = Uri.parse("https://maligaijaman.rdegi.com/api/delete_subcategory.php");
+      final url = Uri.parse("${Appconfig.baseurl}api/delete_subcategory.php");
       final response = await http.post(
         url,
         body: {

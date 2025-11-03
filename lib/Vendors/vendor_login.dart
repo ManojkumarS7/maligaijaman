@@ -11,6 +11,7 @@ import '../Users/forgotPassword_Page.dart';
 import 'package:maligaijaman/ProfileOption_page.dart';
 import 'vendor_PhoneAuth.dart';
 import 'vendor_forgotpassowrd.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class VendorLoginScreen extends StatefulWidget {
   final bool returnToProductPage;
@@ -58,7 +59,7 @@ class _VendorLoginScreenState extends State<VendorLoginScreen> {
         'password': password,
       };
 
-      final url = Uri.parse('https://maligaijaman.rdegi.com/api/vendor_signin.php');
+      final url = Uri.parse('${Appconfig.baseurl}api/vendor_signin.php');
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},

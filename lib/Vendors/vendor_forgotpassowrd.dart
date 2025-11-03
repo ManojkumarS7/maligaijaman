@@ -6,6 +6,7 @@ import '../main.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'vendor_login.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class VendorForgotPasswordPage extends StatefulWidget {
   const VendorForgotPasswordPage({Key? key}) : super(key: key);
@@ -65,7 +66,7 @@ class _VendorForgotPasswordPageState extends State<VendorForgotPasswordPage> {
     setState(() => _isLoading = true);
     try {
       final response = await http.post(
-        Uri.parse('https://maligaijaman.rdegi.com/api/vendor_mail.php'),
+        Uri.parse('${Appconfig.baseurl}api/vendor_mail.php'),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {'username': email},
       );
@@ -123,52 +124,7 @@ class _VendorForgotPasswordPageState extends State<VendorForgotPasswordPage> {
     }
   }
 
-  // Future<void> resetPassword() async {
-  //   final String email = _emailController.text.trim();
-  //   final String newPassword = _newPasswordController.text.trim();
-  //   final String confirmPassword = _confirmPasswordController.text.trim();
-  //   if (newPassword.isEmpty || confirmPassword.isEmpty) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //         const SnackBar(content: Text('Please fill all password fields')));
-  //     return;
-  //   }
-  //   if (newPassword != confirmPassword) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //         const SnackBar(content: Text('Passwords do not match')));
-  //     return;
-  //   }
-  //   setState(() => _isLoading = true);
-  //   try {
-  //     final response = await http.post(
-  //       Uri.parse('https://maligaijaman.rdegi.com/api/forgotpassword_vendor.php'),
-  //       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-  //       body: {'username': email, 'password': newPassword},
-  //     );
-  //     if (response.statusCode == 200) {
-  //       final responseData = json.decode(response.body);
-  //       if (responseData['status'] == 'success') {
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //           const SnackBar(
-  //             content: Text('Password reset successful!'),
-  //             backgroundColor: Color(0xFF4CAF50),
-  //           ),
-  //         );
-  //         Navigator.pop(context);
-  //       } else {
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //           SnackBar(content: Text(responseData['message'] ?? 'Password reset failed')),
-  //         );
-  //       }
-  //     } else {
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(content: Text('Server error: ${response.statusCode}')),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
-  //   }
-  //   setState(() => _isLoading = false);
-  // }
+
 
   Future<void> resetPassword() async {
     final String email = _emailController.text.trim();
@@ -193,7 +149,7 @@ class _VendorForgotPasswordPageState extends State<VendorForgotPasswordPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('https://maligaijaman.rdegi.com/api/forgotpassword_vendor.php'),
+        Uri.parse('${Appconfig.baseurl}api/forgotpassword_vendor.php'),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {'username': email, 'password': newPassword},
       );

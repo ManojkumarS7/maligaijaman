@@ -6,6 +6,7 @@ import 'package:maligaijaman/Users/profile_page.dart';
 import '../main.dart';
 import 'cart_page.dart';
 import 'wishlist_screen.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 
 
@@ -70,7 +71,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       // print('Phone: ${_phoneController.text}');
 
       final response = await http.post(
-        Uri.parse('https://maligaijaman.rdegi.com/api/edit_profile.php'),
+        Uri.parse('${Appconfig.baseurl}api/edit_profile.php'),
         body: {
           'jwt': jwt,
           'id': userId,

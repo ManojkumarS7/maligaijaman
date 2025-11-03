@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maligaijaman/Vendors/vendor_StoreregPage.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class VendorSignupPage extends StatefulWidget {
   const VendorSignupPage({Key? key}) : super(key: key);
@@ -63,7 +64,7 @@ class _VendorSignupPageState extends State<VendorSignupPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('https://maligaijaman.rdegi.com/api/signinotp.php'),
+        Uri.parse('${Appconfig.baseurl}api/signinotp.php'),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {'email': email},
       );

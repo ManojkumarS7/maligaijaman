@@ -11,6 +11,7 @@ import 'cart_page.dart';
 import 'profile_page.dart';
 import 'login_page.dart';
 import 'home_page.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class WishlistScreen extends StatefulWidget {
   const WishlistScreen({Key? key}) : super(key: key);
@@ -71,7 +72,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
     }
 
     final url = Uri.parse(
-        "https://maligaijaman.rdegi.com/api/wishlist.php?jwt=$_jwt&secretkey=$_secretKey");
+        "${Appconfig.baseurl}api/wishlist.php?jwt=$_jwt&secretkey=$_secretKey");
 
     try {
       final response = await http.get(url);

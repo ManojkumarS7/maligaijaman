@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../main.dart';
 import 'home_page.dart';
+import 'package:maligaijaman/apiconstants.dart';
+
 class PhoneAuthScreen extends StatefulWidget {
   final bool returnToProductPage;
 
@@ -36,7 +38,9 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
     try {
       final response = await http.post(
         // Uri.parse('https://maligaijaman.rdegi.com/otp/check-otp.php'),
-        Uri.parse('https://cabnew.staging-rdegi.com/otp/check-otp.php'),
+        // Uri.parse( "${Appconfig.baseur}otp/check-otp.php"),
+        Uri.parse("${Appconfig.baseurl}lotp/check-otp.php"),
+
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {'phone': phone},
       );

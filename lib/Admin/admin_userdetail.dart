@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:maligaijaman/apiconstants.dart';
 
 class UserDetailPage extends StatefulWidget {
   final Map<String, dynamic> user;
@@ -33,7 +34,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
     try {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse("https://maligaijaman.rdegi.com/api/update_adminuser.php"),
+        Uri.parse("${Appconfig.baseurl}api/update_adminuser.php"),
       );
 
       request.fields['id'] = widget.user['id'];
@@ -66,7 +67,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
 
   Future<void> deleteUser() async {
     try {
-      final url = Uri.parse("https://maligaijaman.rdegi.com/api/delete_user.php");
+      final url = Uri.parse("${Appconfig.baseurl}api/delete_user.php");
       final response = await http.post(url, body: {
         'id': widget.user['id'],
       });

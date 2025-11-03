@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:maligaijaman/apiconstants.dart';
 
 class Category {
   final String id;
@@ -59,7 +60,7 @@ class _AddOffersPageState extends State<AddOffersPage> {
   }
 
   Future<void> fetchCategories() async {
-    final url = Uri.parse("https://maligaijaman.rdegi.com/api/categorylist.php");
+    final url = Uri.parse("${Appconfig.baseurl}api/categorylist.php");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -115,7 +116,7 @@ class _AddOffersPageState extends State<AddOffersPage> {
       // Create a multipart request
       final request = http.MultipartRequest(
         'POST',
-        Uri.parse('https://maligaijaman.rdegi.com/api/offer_insert.php'),
+        Uri.parse('${Appconfig.baseurl}api/offer_insert.php'),
       );
 
       // Add text fields
@@ -123,10 +124,7 @@ class _AddOffersPageState extends State<AddOffersPage> {
       request.fields['description'] = description;
       request.fields['category_id'] = selectedCategory!.id;
 
-      // Add the image file
-      // request.files.add(
-      //   await http.MultipartFile.fromPath('image', avatarImage!.path),
-      // );
+
 
       // Send the request
       final streamedResponse = await request.send();

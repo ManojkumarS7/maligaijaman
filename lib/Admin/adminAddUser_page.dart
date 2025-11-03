@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:maligaijaman/apiconstants.dart';
 
 class AddUserPage extends StatefulWidget {
   @override
@@ -26,7 +27,7 @@ class _AddUserPageState extends State<AddUserPage> {
       });
 
       try {
-        final url = Uri.parse("https://maligaijaman.rdegi.com/api/adminsignup.php");
+        final url = Uri.parse("${Appconfig.baseurl}api/adminsignup.php");
 
         // Prepare the request body
         final request = http.MultipartRequest('POST', url);

@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'vendorBankReg_Page.dart';
+import 'package:maligaijaman/apiconstants.dart';
 
 class StoreCategory {
   final String id;
@@ -65,7 +66,7 @@ class _VendorStoreInfoPageState extends State<VendorStoreRegPage> {
       _isLoadingCategories = true;
     });
 
-    final url = Uri.parse("https://maligaijaman.rdegi.com/api/categorylist.php");
+    final url = Uri.parse("${Appconfig.baseurl}api/categorylist.php");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {

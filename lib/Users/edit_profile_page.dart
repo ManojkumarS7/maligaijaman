@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:maligaijaman/apiconstants.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final String id;
@@ -45,7 +46,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       _isLoading = true;
     });
 
-    final uri = Uri.parse("https://maligaijaman.rdegi.com/api/edit_profile.php");
+    final uri = Uri.parse("${Appconfig.baseurl}api/edit_profile.php");
 
     try {
       final response = await http.post(
