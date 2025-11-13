@@ -185,7 +185,7 @@ class _AddProductsPageState extends State<AddProductsPage> {
 
     try {
       final url = Uri.parse(
-          'https://maligaijaman.rdegi.com/api/add_product.php');
+          '${Appconfig.baseurl}api/add_product.php');
       final request = http.MultipartRequest('POST', url);
 
       request.fields['product_name'] = productNameController.text.trim();

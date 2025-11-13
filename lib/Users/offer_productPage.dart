@@ -195,7 +195,7 @@ class _OfferPageState extends State<OfferPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.offerName} - ${widget.offerPercentage}% OFF'),
-        backgroundColor: Color(0xFFFFC107),
+        backgroundColor: Colors.green[700],
       ),
       body: Column(
         children: [

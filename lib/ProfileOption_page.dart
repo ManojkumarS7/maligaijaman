@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'Vendors/vendor_login.dart';
 import 'Admin/admin_login.dart';
 import 'Users/login_page.dart';
+import 'apiconstants.dart';
 
 class UserProfile {
   final String email;
@@ -70,7 +71,7 @@ class _ProfileOptionsScreenState extends State<ProfileOptionsScreen> {
 
   Future<UserProfile> fetchUserProfile() async {
     final String? userid = await _storage.read(key: 'user_id');
-    final uri = Uri.parse('https://maligaijaman.rdegi.com/api/profile.php?id=$userid');
+    final uri = Uri.parse('${Appconfig.baseurl}api/profile.php?id=$userid');
     final response = await http.get(uri);
 
     if (response.statusCode == 200 && response.body.isNotEmpty) {

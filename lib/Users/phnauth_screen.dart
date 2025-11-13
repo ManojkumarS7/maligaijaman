@@ -37,9 +37,8 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
 
     try {
       final response = await http.post(
-        // Uri.parse('https://maligaijaman.rdegi.com/otp/check-otp.php'),
-        // Uri.parse( "${Appconfig.baseur}otp/check-otp.php"),
-        Uri.parse("${Appconfig.baseurl}lotp/check-otp.php"),
+
+        Uri.parse("${Appconfig.baseurl}otp/check-otp.php"),
 
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {'phone': phone},
@@ -61,10 +60,10 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
             return;
           }
         } catch (_) {
-          // ignore here, since response may contain two concatenated JSONs
+
         }
 
-        // Case 2: Success (two JSON objects concatenated)
+
         final parts = data.split('}');
         if (parts.length >= 2) {
           final jsonStr = '${parts[1]}}'; // second JSON

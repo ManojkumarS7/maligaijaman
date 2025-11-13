@@ -60,7 +60,7 @@ class _AddSubCategoryPageState extends State<AddSubCategoryPage> {
   }
 
   Future<void> fetchCategories() async {
-    final url = Uri.parse("https://maligaijaman.rdegi.com/api/categorylist.php");
+    final url = Uri.parse("${Appconfig.baseurl}api/categorylist.php");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {

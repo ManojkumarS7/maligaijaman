@@ -150,9 +150,9 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFC107),
+      backgroundColor: Colors.white,
       appBar: AppBar(
-          backgroundColor: Color(0xFFFFC107),
+          backgroundColor: Colors.green[700],
         title: Text('Add Category'),
       ),
       body: SingleChildScrollView(
@@ -167,7 +167,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                 child: Stack(
                   children: [
                     CircleAvatar(
-                      backgroundColor:  Color(0xFF00677E),
+                      backgroundColor: Colors.green[700],
                       radius: 50,
                       backgroundImage: avatarImage != null
                           ? FileImage(avatarImage!)
@@ -227,7 +227,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                     ? CircularProgressIndicator()
                     : ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor:  Color(0xFF00677E),
+                    backgroundColor:  Colors.green[700],
                     foregroundColor: Colors.white,
                   ),
                   onPressed: addCategory,

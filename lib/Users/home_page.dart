@@ -2359,15 +2359,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                         fontSize: 15,
                                       ),
                                     ),
-                                    Text(
-                                      '₹${(double.parse(price) + 10).toStringAsFixed(0)}',
-                                      style: TextStyle(
-                                        color: Colors.grey.shade500,
-                                        fontSize: 12,
-                                        decoration:
-                                        TextDecoration.lineThrough,
-                                      ),
-                                    ),
+                                    // Text(
+                                    //   '₹${(double.parse(price) + 10).toStringAsFixed(0)}',
+                                    //   style: TextStyle(
+                                    //     color: Colors.grey.shade500,
+                                    //     fontSize: 12,
+                                    //     decoration:
+                                    //     TextDecoration.lineThrough,
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
                                 Container(

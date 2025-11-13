@@ -155,150 +155,119 @@ class _VendorStoreInfoPageState extends State<VendorStoreInfoPage> {
         print('Secret key: $secretKey');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-              content: Text('Authentication error. Please login again')),
+            content: Text('Authentication error. Please login again'),
+          ),
         );
         Navigator.of(context).pushReplacementNamed('/login');
         return;
       }
 
-      // Construct the URL with query parameters
       final url = Uri.parse(
         '${Appconfig.baseurl}api/store_list.php?jwt=$jwt&secretkey=$secretKey',
       );
 
       print('Fetching from URL: $url');
-      final response = await http.get(url);
-      print('Status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
 
-      if (response.statusCode == 200) {
+      // Use Request + StreamedResponse to bypass invalid Content-Type
+      final request = http.Request('GET', url);
+      final streamedResponse = await request.send();
+
+      final responseBody = await streamedResponse.stream.bytesToString();
+      print('Status code: ${streamedResponse.statusCode}');
+      print('Response headers: ${streamedResponse.headers}');
+      print('Response body: $responseBody');
+
+      if (streamedResponse.statusCode == 200) {
         try {
-          final responseBody = response.body;
+          final List<dynamic> stores = json.decode(responseBody);
 
-          if (responseBody.contains('"store_name"')) {
-            final jsonStartIndex = responseBody.indexOf('[');
-            final jsonEndIndex = responseBody.lastIndexOf(']') + 1;
+          if (stores.isNotEmpty) {
+            final storeData = stores[0];
+            final status = storeData['status']?.toString() ?? '0';
 
-            if (jsonStartIndex >= 0 && jsonEndIndex > jsonStartIndex) {
-              final jsonPart = responseBody.substring(
-                  jsonStartIndex, jsonEndIndex);
-              final List<dynamic> stores = json.decode(jsonPart);
+            setState(() {
+              _approvalStatus = status;
+              _isStoreApproved = status == '1';
+              _hasExistingStore = true;
 
-              if (stores.isNotEmpty) {
-                final storeData = stores[0];
+              _submissionDate = storeData['created_at'] ?? 'Recently';
 
-                // Check the approval status
-                final status = storeData['status']?.toString() ?? '0';
+              _nameController.text = storeData['name'] ?? '';
+              _phonenoController.text = storeData['phone'] ?? '';
+              _emailController.text = storeData['email'] ?? '';
+              _storeNameController.text = storeData['store_name'] ?? '';
+              _storeAddressController.text = storeData['store_address'] ?? '';
+              _cityController.text = storeData['city'] ?? '';
+              _stateController.text = storeData['state'] ?? '';
+              _pincodeController.text = storeData['pincode'] ?? '';
+              _descriptionController.text = storeData['description'] ?? '';
 
-                setState(() {
-                  _approvalStatus = status;
-                  _isStoreApproved = status == '1';
-                  _hasExistingStore = true;
-
-                  // Get submission date if available
-                  _submissionDate = storeData['created_at'] ?? 'Recently';
-
-                  // Fill form with existing data
-                  _nameController.text = storeData['name'] ?? '';
-                  _phonenoController.text = storeData['phone'] ?? '';
-                  _emailController.text = storeData['email'] ?? '';
-                  _storeNameController.text = storeData['store_name'] ?? '';
-                  _storeAddressController.text =
-                      storeData['store_address'] ?? '';
-                  _cityController.text = storeData['city'] ?? '';
-                  _stateController.text = storeData['state'] ?? '';
-                  _pincodeController.text = storeData['pincode'] ?? '';
-                  _descriptionController.text = storeData['description'] ?? '';
-
-                  // Parse opening time
-                  if (storeData['opening_time'] != null) {
-                    final openingTime = storeData['opening_time'].toString();
-                    if (openingTime.contains(':')) {
-                      final parts = openingTime.split(':');
-                      if (parts.length >= 2) {
-                        _openingTime = TimeOfDay(
-                          hour: int.parse(parts[0]),
-                          minute: int.parse(parts[1]),
-                        );
-                      }
-                    }
-                  }
-
-                  // Parse closing time
-                  if (storeData['closing_time'] != null) {
-                    final closingTime = storeData['closing_time'].toString();
-                    if (closingTime.contains(':')) {
-                      final parts = closingTime.split(':');
-                      if (parts.length >= 2) {
-                        _closingTime = TimeOfDay(
-                          hour: int.parse(parts[0]),
-                          minute: int.parse(parts[1]),
-                        );
-                      }
-                    }
-                  }
-
-                  // Handle logo if available
-                  if (storeData['logo'] != null && storeData['logo']
-                      .toString()
-                      .isNotEmpty) {
-                    _existingLogoUrl =
-                    '${Appconfig.baseurl}uploads/store_logos/${storeData['logo']}';
-                  }
-
-                  // Handle categories
-                  if (storeData['categories'] != null && storeData['categories']
-                      .toString()
-                      .isNotEmpty) {
-                    final categoryString = storeData['categories'].toString();
-                    print('Raw category string: $categoryString');
-
-                    // Handle different formats of category data
-                    _selectedCategoryIds = [];
-
-                    if (categoryString.contains(',')) {
-                      _selectedCategoryIds = categoryString.split(',');
-                    } else {
-                      _selectedCategoryIds = [categoryString];
-                    }
-
-                    print('Selected category IDs: $_selectedCategoryIds');
-
-                    // If categories are already loaded, match them now
-                    if (_availableCategories.isNotEmpty) {
-                      _matchSelectedCategories();
-                    }
-                  }
-                });
-
-                // Show appropriate message based on status
-                if (status == '0') {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Your store is waiting for approval'),
-                      backgroundColor: Colors.orange,
-                      duration: Duration(seconds: 5),
-                    ),
+              if (storeData['opening_time'] != null) {
+                final parts = storeData['opening_time'].toString().split(':');
+                if (parts.length >= 2) {
+                  _openingTime = TimeOfDay(
+                    hour: int.parse(parts[0]),
+                    minute: int.parse(parts[1]),
                   );
                 }
               }
+
+              if (storeData['closing_time'] != null) {
+                final parts = storeData['closing_time'].toString().split(':');
+                if (parts.length >= 2) {
+                  _closingTime = TimeOfDay(
+                    hour: int.parse(parts[0]),
+                    minute: int.parse(parts[1]),
+                  );
+                }
+              }
+
+              if (storeData['logo'] != null &&
+                  storeData['logo'].toString().isNotEmpty) {
+                _existingLogoUrl =
+                '${Appconfig.baseurl}uploads/store_logos/${storeData['logo']}';
+              }
+
+              if (storeData['categories'] != null &&
+                  storeData['categories'].toString().isNotEmpty) {
+                final categoryString = storeData['categories'].toString();
+                print('Raw category string: $categoryString');
+                _selectedCategoryIds = categoryString.contains(',')
+                    ? categoryString.split(',')
+                    : [categoryString];
+                print('Selected category IDs: $_selectedCategoryIds');
+
+                if (_availableCategories.isNotEmpty) {
+                  _matchSelectedCategories();
+                }
+              }
+            });
+
+            if (status == '0') {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Your store is waiting for approval'),
+                  backgroundColor: Colors.orange,
+                  duration: Duration(seconds: 5),
+                ),
+              );
             }
           } else {
-            print('No store data found in response');
+            print('No store data found');
             setState(() {
               _hasExistingStore = false;
               _isStoreApproved = false;
             });
           }
         } catch (parseError) {
-          print('Error parsing response body: $parseError');
+          print('Error parsing response: $parseError');
           setState(() {
             _hasExistingStore = false;
             _isStoreApproved = false;
           });
         }
       } else {
-        print('Failed to fetch store data: ${response.statusCode}');
+        print('Failed to fetch store data: ${streamedResponse.statusCode}');
         setState(() {
           _hasExistingStore = false;
           _isStoreApproved = false;
@@ -319,6 +288,7 @@ class _VendorStoreInfoPageState extends State<VendorStoreInfoPage> {
       });
     }
   }
+
 
   Future<void> _selectLogo() async {
     final XFile? pickedFile = await _picker.pickImage(

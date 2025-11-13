@@ -95,7 +95,7 @@ class _SalesInsightsScreenState extends State<SalesInsightsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFC107),
+        backgroundColor: Color.fromRGBO(85, 139, 47, 1),
         title: const Text(
           'Sales Insights',
           style: TextStyle(fontWeight: FontWeight.bold),

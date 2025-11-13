@@ -12,7 +12,7 @@ import 'dart:convert';
 import 'vendor_insights.dart';
 import 'vendor_orders.dart';
 import 'package:maligaijaman/Users/home_page.dart';
-
+import 'package:maligaijaman/apiconstants.dart';
 
 
 class StoreData {
@@ -30,6 +30,11 @@ class StoreData {
   final String name;
   final String phone;
   final String email;
+  final String? accountHolderName;
+  final String? accNumber;
+  final String? bankName;
+  final String? branch;
+  final String? ifsc;
 
   StoreData({
     required this.id,
@@ -46,25 +51,64 @@ class StoreData {
     required this.name,
     required this.phone,
     required this.email,
+    this.accountHolderName,
+    this.accNumber,
+    this.bankName,
+    this.branch,
+    this.ifsc,
   });
 
   factory StoreData.fromJson(Map<String, dynamic> json) {
-    return StoreData(
-      id: json['id'] ?? '',
-      storeName: json['store_name'] ?? '',
-      storeAddress: json['store_address'] ?? '',
-      city: json['city'] ?? '',
-      state: json['state'] ?? '',
-      description: json['description'] ?? '',
-      pincode: json['pincode'] ?? '',
-      openingTime: json['opening_time'] ?? '',
-      closingTime: json['closing_time'] ?? '',
-      categories: json['categories'] ?? '',
-      status: json['status'] ?? '',
-      name: json['name'] ?? '',
-      phone: json['phone'] ?? '',
-      email: json['email'] ?? '',
-    );
+    try {
+      return StoreData(
+        id: json['id']?.toString() ?? '',
+        storeName: json['store_name']?.toString() ?? '',
+        storeAddress: json['store_address']?.toString() ?? '',
+        city: json['city']?.toString() ?? '',
+        state: json['state']?.toString() ?? '',
+        description: json['description']?.toString() ?? '',
+        pincode: json['pincode']?.toString() ?? '',
+        openingTime: json['opening_time']?.toString() ?? '',
+        closingTime: json['closing_time']?.toString() ?? '',
+        categories: json['categories']?.toString() ?? '',
+        status: json['status']?.toString() ?? '',
+        name: json['name']?.toString() ?? '',
+        phone: json['phone']?.toString() ?? '',
+        email: json['email']?.toString() ?? '',
+        accountHolderName: json['account_holder_name']?.toString(),
+        accNumber: json['Acc_Number']?.toString(),
+        bankName: json['BankName']?.toString(),
+        branch: json['Branch']?.toString(),
+        ifsc: json['ifsc']?.toString(),
+      );
+    } catch (e) {
+      print('Error parsing StoreData: $e');
+      rethrow;
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'store_name': storeName,
+      'store_address': storeAddress,
+      'city': city,
+      'state': state,
+      'description': description,
+      'pincode': pincode,
+      'opening_time': openingTime,
+      'closing_time': closingTime,
+      'categories': categories,
+      'status': status,
+      'name': name,
+      'phone': phone,
+      'email': email,
+      'account_holder_name': accountHolderName,
+      'Acc_Number': accNumber,
+      'BankName': bankName,
+      'Branch': branch,
+      'ifsc': ifsc,
+    };
   }
 }
 
@@ -92,7 +136,8 @@ class _VendorDashboardState extends State<VendorDashboard> with SingleTickerProv
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1500),
-    )..forward();
+    )
+      ..forward();
     fetchStoreData();
   }
 
@@ -102,22 +147,44 @@ class _VendorDashboardState extends State<VendorDashboard> with SingleTickerProv
     super.dispose();
   }
 
+
   Future<void> fetchStoreData() async {
-    final String? jwt = await _storage.read(key: 'jwt');
-    final String? secretKey = await _storage.read(key: 'key');
-
-    if (jwt == null || secretKey == null) {
-      throw Exception('Authentication tokens not found');
-    }
     try {
-      final response = await http.get(Uri.parse(
-          'https://maligaijaman.rdegi.com/api/store_list.php?jwt=$jwt&secretkey=$secretKey'));
+      final String? jwt = await _storage.read(key: 'jwt');
+      final String? secretKey = await _storage.read(key: 'key');
 
-      if (response.statusCode == 200) {
-        final List<dynamic> responseData = json.decode(response.body);
-        if (responseData.isNotEmpty) {
+      if (jwt == null || secretKey == null) {
+        setState(() {
+          errorMessage = 'Authentication tokens not found';
+          isLoading = false;
+        });
+        return;
+      }
+
+      final apiUrl =
+          'https://cabnew.staging-rdegi.com/api/store_list.php?jwt=$jwt&secretkey=$secretKey';
+      print('API URL: $apiUrl');
+
+      final request = http.Request('GET', Uri.parse(apiUrl))
+        ..headers.addAll({
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        });
+
+      final streamedResponse = await request.send();
+      final responseBody = await streamedResponse.stream.bytesToString();
+
+      print('Status Code: ${streamedResponse.statusCode}');
+      print('Response Headers: ${streamedResponse.headers}');
+      print('Response Body: $responseBody');
+
+      if (streamedResponse.statusCode == 200) {
+        final decodedData = json.decode(responseBody);
+
+        if (decodedData is List && decodedData.isNotEmpty) {
           setState(() {
-            storeData = StoreData.fromJson(responseData[0]);
+            storeData = StoreData.fromJson(decodedData[0]);
+            errorMessage = '';
             isLoading = false;
           });
         } else {
@@ -128,17 +195,21 @@ class _VendorDashboardState extends State<VendorDashboard> with SingleTickerProv
         }
       } else {
         setState(() {
-          errorMessage = 'Failed to load store data: ${response.statusCode}';
+          errorMessage =
+          'Failed to load data (Status: ${streamedResponse.statusCode})';
           isLoading = false;
         });
       }
     } catch (e) {
+      print('Error: $e');
       setState(() {
-        errorMessage = 'Error fetching store data: $e';
+        errorMessage = 'Error: ${e.toString()}';
         isLoading = false;
       });
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -233,7 +304,8 @@ class _VendorDashboardState extends State<VendorDashboard> with SingleTickerProv
               style: ElevatedButton.styleFrom(
                 backgroundColor: primaryGreen,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 32, vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -253,6 +325,7 @@ class _VendorDashboardState extends State<VendorDashboard> with SingleTickerProv
       return _buildDashboardView();
     }
   }
+
   Widget _buildApprovalPendingView() {
     return CustomScrollView(
       slivers: [
@@ -331,13 +404,19 @@ class _VendorDashboardState extends State<VendorDashboard> with SingleTickerProv
                             ),
                           ),
                           const SizedBox(height: 16),
-                          _buildDetailRow(Icons.store, 'Store Name', storeData.storeName),
-                          _buildDetailRow(Icons.location_on, 'Address', storeData.storeAddress),
-                          _buildDetailRow(Icons.location_city, 'City', storeData.city),
+                          _buildDetailRow(
+                              Icons.store, 'Store Name', storeData.storeName),
+                          _buildDetailRow(Icons.location_on, 'Address',
+                              storeData.storeAddress),
+                          _buildDetailRow(
+                              Icons.location_city, 'City', storeData.city),
                           _buildDetailRow(Icons.map, 'State', storeData.state),
-                          _buildDetailRow(Icons.pin_drop, 'Pincode', storeData.pincode),
-                          _buildDetailRow(Icons.access_time, 'Opening', storeData.openingTime),
-                          _buildDetailRow(Icons.access_time_filled, 'Closing', storeData.closingTime),
+                          _buildDetailRow(
+                              Icons.pin_drop, 'Pincode', storeData.pincode),
+                          _buildDetailRow(Icons.access_time, 'Opening',
+                              storeData.openingTime),
+                          _buildDetailRow(Icons.access_time_filled, 'Closing',
+                              storeData.closingTime),
                         ],
                       ),
                     ),
@@ -569,14 +648,12 @@ class _VendorDashboardState extends State<VendorDashboard> with SingleTickerProv
     );
   }
 
-  Widget _buildModernCard(
-      String title,
+  Widget _buildModernCard(String title,
       IconData icon,
       // String subtitle,
       Color color,
       Widget targetScreen,
-      int index,
-      ) {
+      int index,) {
     return TweenAnimationBuilder(
       tween: Tween<double>(begin: 0, end: 1),
       duration: Duration(milliseconds: 500 + (index * 100)),
@@ -659,7 +736,8 @@ class _VendorDashboardState extends State<VendorDashboard> with SingleTickerProv
 
                   const SizedBox(height: 16),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
                       color: color.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
@@ -711,7 +789,8 @@ class _VendorDashboardState extends State<VendorDashboard> with SingleTickerProv
             value: 'logout',
             child: Row(
               children: [
-                Icon(Icons.logout_rounded, color: Colors.red.shade600, size: 20),
+                Icon(
+                    Icons.logout_rounded, color: Colors.red.shade600, size: 20),
                 const SizedBox(width: 12),
                 const Text(
                   'Logout',
@@ -728,44 +807,45 @@ class _VendorDashboardState extends State<VendorDashboard> with SingleTickerProv
   void _showLogoutDialog() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        title: Row(
-          children: [
-            Icon(Icons.logout_rounded, color: primaryGreen),
-            const SizedBox(width: 12),
-            const Text('Logout'),
-          ],
-        ),
-        content: const Text('Are you sure you want to logout?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              'Cancel',
-              style: TextStyle(color: Colors.grey.shade600),
+      builder: (context) =>
+          AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
             ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => HomeScreen()),
-                    (route) => false,
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: primaryGreen,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+            title: Row(
+              children: [
+                Icon(Icons.logout_rounded, color: primaryGreen),
+                const SizedBox(width: 12),
+                const Text('Logout'),
+              ],
+            ),
+            content: const Text('Are you sure you want to logout?'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(color: Colors.grey.shade600),
+                ),
               ),
-            ),
-            child: const Text('Logout'),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                        (route) => false,
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryGreen,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const Text('Logout'),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 }
