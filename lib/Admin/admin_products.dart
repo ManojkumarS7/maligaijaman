@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:maligaijaman/Admin/admin_productdetail.dart';
+import 'package:maligaijaman/appcolors.dart';
 import 'adminAddProducts_page.dart';
 import 'package:maligaijaman/apiconstants.dart';
 
@@ -98,7 +99,7 @@ class _AdminProductListScreenState extends State<AdminProductListScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        backgroundColor: primaryColor,
+        backgroundColor: Appcolor.Appbarcolor,
         elevation: 4,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),

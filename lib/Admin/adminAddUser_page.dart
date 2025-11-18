@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class AddUserPage extends StatefulWidget {
   @override
@@ -79,10 +80,11 @@ class _AddUserPageState extends State<AddUserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFC107),
+      backgroundColor: Colors.white,
       appBar: AppBar(
-          backgroundColor: Color(0xFFFFC107),
-        title: Text('Add User'),
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, color: Colors.white,)),
+        backgroundColor: Appcolor.Appbarcolor,
+        title: Text('Add Users',style: TextStyle(color: Colors.white),),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),

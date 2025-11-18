@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class SalesInsightsScreen extends StatefulWidget {
   const SalesInsightsScreen({Key? key}) : super(key: key);
@@ -95,17 +96,18 @@ class _SalesInsightsScreenState extends State<SalesInsightsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(85, 139, 47, 1),
-        title: const Text(
-          'Sales Insights',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
         ),
-        // backgroundColor: Colors.white,
-        elevation: 0,
+        title: Text('Sales Insights', style: TextStyle(color: Colors.white),),
+        backgroundColor: Appcolor.Appbarcolor,
+
         actions: [
+          // Add refresh button
           IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _fetchReports,
+            icon: Icon(Icons.refresh, color: Colors.white),
+            onPressed: (){},
           ),
         ],
       ),

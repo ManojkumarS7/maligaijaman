@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import '../main.dart';
 import 'home_page.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({Key? key}) : super(key: key);
@@ -230,15 +231,16 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
-        backgroundColor: const Color(0xFF2E7D32), // Yellow background
+        backgroundColor: Appcolor.Appbarcolor, // Yellow background
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
         ),
+
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),

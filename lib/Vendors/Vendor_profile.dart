@@ -9,6 +9,7 @@ import '../Users/login_page.dart';
 import 'vendor_detailspage.dart';
 import '../Users/about_page.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class VendorProfile {
 
@@ -221,21 +222,12 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
-        backgroundColor: const Color.fromRGBO(85, 139, 47, 1), // Yellow background
+        backgroundColor: Appcolor.Appbarcolor, // Yellow background
         elevation: 0,
-        // actions: [
-        //   IconButton(
-        //     icon: const Icon(Icons.favorite_border, color: Colors.white),
-        //     onPressed: () {},
-        //   ),
-        //   IconButton(
-        //     icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
-        //     onPressed: () {},
-        //   ),
-        // ],
+       leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, color: Colors.white,)),
       ),
       body: FutureBuilder<VendorProfile>(
         future: fetchUserProfile(),
@@ -271,7 +263,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
               children: [
                 Container(
                   padding: const EdgeInsets.all(20),
-                  color: const Color.fromRGBO(85, 139, 47, 1), // Yellow background
+                  color: Appcolor.Appbarcolor, // Yellow background
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -282,13 +274,14 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                             height: 60,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              border: Border.all(color: Colors.black, width: 2),
+                              border: Border.all(color: Colors.white, width: 2),
                             ),
                             child: Center(
                               child: Text(
                                 profile.username.isNotEmpty ? profile
                                     .username[0].toUpperCase() : 'U',
                                 style: const TextStyle(
+                                  color: Colors.white,
                                   fontSize: 32,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -302,6 +295,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                               Text(
                                 profile.username,
                                 style: const TextStyle(
+                                  color: Colors.white,
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -311,12 +305,12 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                                 profile.phone.isNotEmpty
                                     ? profile.phone
                                     : '+91 8564XXXXX',
-                                style: const TextStyle(fontSize: 16),
+                                style: const TextStyle(fontSize: 16,  color: Colors.white,),
                               ),
                               const SizedBox(height: 3),
                               Text(
                                 profile.email,
-                                style: const TextStyle(fontSize: 16),
+                                style: const TextStyle(fontSize: 16,  color: Colors.white,),
                               ),
                             ],
                           ),

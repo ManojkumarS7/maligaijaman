@@ -66,7 +66,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     setState(() => _isLoading = true);
     try {
       final response = await http.post(
-        Uri.parse('${Appconfig.baseurl}api/mail.php'),
+        Uri.parse('${Appconfig.mailbase}api/mail.php'),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {'username': email},
       );

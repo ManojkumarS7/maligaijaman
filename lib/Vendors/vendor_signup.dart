@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maligaijaman/Vendors/vendor_StoreregPage.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class VendorSignupPage extends StatefulWidget {
   const VendorSignupPage({Key? key}) : super(key: key);
@@ -128,8 +129,17 @@ class _VendorSignupPageState extends State<VendorSignupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Vendor Signup'),
-        backgroundColor: Colors.green.shade700,
+        title: const Text(
+          'Vendor Signup',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Appcolor.Appbarcolor, // Yellow background
+        elevation: 0,
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, color: Colors.white,)),
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(

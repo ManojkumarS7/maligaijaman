@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:maligaijaman/appcolors.dart';
 import 'dart:convert';
 
 import 'adminAddUser_page.dart';
@@ -72,8 +73,11 @@ class _AdminUserPageState extends State<AdminUsers> {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        backgroundColor: Colors.green[700],
-        leading: BackButton(color: Colors.white),
+        backgroundColor: Appcolor.Appbarcolor,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: Text(
           'Users',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),

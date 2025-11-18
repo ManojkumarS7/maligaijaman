@@ -6,6 +6,7 @@ import 'package:maligaijaman/Admin/admin_productdetail.dart';
 // import '../Admin/adminAddProducts_page.dart';
 import 'package:maligaijaman/Vendors/vendor_addProducts.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class VendorProductListScreen extends StatefulWidget {
   const VendorProductListScreen({Key? key}) : super(key: key);
@@ -177,7 +178,7 @@ class _VendorProductListScreenState extends State<VendorProductListScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(85, 139, 47, 1),
+        backgroundColor: Appcolor.Appbarcolor,
         actions: [
           IconButton(
             icon: Icon(Icons.add, color: Colors.white),

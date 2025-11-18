@@ -8,6 +8,7 @@ import '../Users/wishlist_screen.dart';
 import '../Users/profile_page.dart';
 import 'vendor_OrderDetail_Page.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 
 class VendorOrdersScreen extends StatefulWidget {
@@ -449,17 +450,15 @@ class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
-        title: const Text(
-          "Vendor Orders",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
         ),
-        backgroundColor: Color.fromRGBO(85, 139, 47, 1), // Golden yellow color
-        elevation: 0,
+        title: Text('Vendor Orders', style: TextStyle(color: Colors.white),),
+        backgroundColor: Appcolor.Appbarcolor,
+
         actions: [
           // Add refresh button
           IconButton(
@@ -468,6 +467,7 @@ class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
           ),
         ],
       ),
+
       body: isLoading
           ? const Center(child: CircularProgressIndicator(
         valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(85, 139, 47, 1)),

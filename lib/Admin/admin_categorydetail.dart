@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class CategoryDetailPage extends StatefulWidget {
   final Map<String, dynamic> category;
@@ -185,13 +186,14 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: BackButton(color: Color.fromRGBO(85, 139, 47, 1)),
-        title: Text('Category Details', style: TextStyle(color: Colors.black)),
-          backgroundColor: Colors.white,
+
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, color: Colors.white,)),
+        title: Text('Category Details', style: TextStyle(color: Colors.white)),
+          backgroundColor: Appcolor.Appbarcolor,
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.delete, color: Color.fromRGBO(85, 139, 47, 1)),
+            icon: Icon(Icons.delete, color: Colors.white),
             onPressed: showDeleteConfirmation,
           ),
         ],

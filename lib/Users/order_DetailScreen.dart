@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:maligaijaman/Users/Orderstatus_page.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class OrderDetailPage extends StatefulWidget {
   final String orderId;
@@ -125,6 +126,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+
+
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+
         title: const Text(
           "Order Details",
           style: TextStyle(
@@ -133,7 +141,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Color(0xFF2E7D32), // Golden yellow color
+        backgroundColor: Appcolor.Appbarcolor, // Golden yellow color
         elevation: 0,
         actions: [
           // Status button in app bar

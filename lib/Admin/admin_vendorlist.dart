@@ -233,7 +233,7 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
       isLoading = true; // Show loading indicator while refreshing
     });
 
-    final url = Uri.parse("https://maligaijaman.rdegi.com/api/store_list_admin.php");
+    final url = Uri.parse("${Appconfig.baseurl}api/store_list_admin.php");
 
     try {
       final response = await http.get(url);
@@ -304,7 +304,7 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
 
     try {
       // Call API to update vendor status
-      final url = Uri.parse("https://maligaijaman.rdegi.com/api/shop_approve.php");
+      final url = Uri.parse("${Appconfig.baseurl}api/shop_approve.php");
 
       final response = await http.post(
         url,

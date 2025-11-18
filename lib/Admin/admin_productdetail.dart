@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart'; // For image picking
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class AdminProductDetailPage extends StatefulWidget {
   final String productId;
@@ -399,13 +400,13 @@ class _AdminProductDetailPageState extends State<AdminProductDetailPage> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(color: Colors.blue),
-        title: Text('Edit Product', style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, color: Colors.white,)),
+        title: Text('Edit Product', style: TextStyle(color: Colors.white)),
+        backgroundColor: Appcolor.Appbarcolor,
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.delete, color: Colors.red),
+            icon: Icon(Icons.delete, color: Colors.white),
             onPressed: _showDeleteConfirmation,
           ),
         ],

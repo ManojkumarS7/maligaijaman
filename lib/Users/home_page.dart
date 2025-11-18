@@ -957,6 +957,8 @@ class _HomeScreenState extends State<HomeScreen> {
       return const SizedBox.shrink(); // Return an empty widget if no offers
     }
 
+
+
     return Container(
       height: 220, // Adjusted height for the new design
       margin: const EdgeInsets.only(bottom: 16),
@@ -1180,6 +1182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ],
                               ),
                             ),
+                              // Around line 1183, wrap the buildCategoryImage()
                           ),
                         ),
                       ],

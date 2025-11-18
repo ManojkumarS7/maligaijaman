@@ -13,6 +13,7 @@ import 'cart_page.dart';
 import 'wishlist_screen.dart';
 import 'profile_page.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class AddressViewScreen extends StatefulWidget {
   const AddressViewScreen({Key? key}) : super(key: key);
@@ -300,14 +301,18 @@ class _AddressViewScreenState extends State<AddressViewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF2E7D32),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        backgroundColor: Appcolor.Appbarcolor,
         title: const Text(
           'Select Delivery Address',
           style: TextStyle(color: Colors.white),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh,color: Colors.white,),
             onPressed: _refreshAddresses,
           ),
         ],

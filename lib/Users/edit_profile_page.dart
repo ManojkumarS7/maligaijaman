@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final String id;
@@ -122,9 +123,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
       backgroundColor: Colors.green.shade50,
       appBar: AppBar(
-        title: const Text("Edit Profile"),
-        backgroundColor: Colors.green.shade800,
-        leading: BackButton(color: Colors.white),
+        leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+        onPressed: () => Navigator.pop(context),
+      ),
+
+        title: const Text("Edit Profile",style: TextStyle(color: Colors.white),),
+        backgroundColor: Appcolor.Appbarcolor,
+        // leading: BackButton(color: Colors.white),
         // leading: IconButton(
         //   icon: const Icon(Icons.arrow_back, color: Colors.white),
         //   onPressed: () => Navigator.pop(context),

@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'payment_selectionPage.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class PaymentPage extends StatefulWidget {
   final Map<String, dynamic> selectedAddress;
@@ -605,8 +606,12 @@ class _PaymentPageState extends State<PaymentPage> {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: const Text("Order Summary"),
-        backgroundColor: Color(0xFF2E7D32),
+        backgroundColor: Appcolor.Appbarcolor,
         foregroundColor: Colors.white,
         elevation: 0,
       ),

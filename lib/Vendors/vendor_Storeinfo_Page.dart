@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class StoreCategory {
   final String id;
@@ -987,23 +988,19 @@ class _VendorStoreInfoPageState extends State<VendorStoreInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          _hasExistingStore
-              ? _isStoreApproved
-              ? 'Update Store Information'
-              : 'Store Approval Pending'
-              : 'Store Information',
+        title: const Text(
+          'Store Information',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
-        backgroundColor: const Color.fromRGBO(85, 139, 47, 1),
-        actions: [
-          if (_hasExistingStore && !_isStoreApproved)
-            IconButton(
-              icon: const Icon(Icons.refresh),
-              onPressed: _fetchStoreData,
-              tooltip: 'Refresh Status',
-            ),
-        ],
+        backgroundColor: Appcolor.Appbarcolor, // Yellow background
+        elevation: 0,
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, color: Colors.white,)),
       ),
+
       backgroundColor: Colors.white,
       body: _isLoadingStoreData
           ? const Center(child: CircularProgressIndicator())

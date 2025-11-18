@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:maligaijaman/apiconstants.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class AdminSubCategoryDetail extends StatefulWidget {
   final String subCategoryId;
@@ -240,14 +241,15 @@ class _AdminSubCategoryDetailState extends State<AdminSubCategoryDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: BackButton(color: Colors.blue),
-        title: Text('Edit Subcategory', style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, color: Colors.white,)),
+        title: Text('Edit Subcategory', style: TextStyle(color: Colors.white)),
+        backgroundColor: Appcolor.Appbarcolor,
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.delete, color: Colors.red),
+            icon: Icon(Icons.delete, color: Colors.white),
             onPressed: _showDeleteConfirmation,
           ),
         ],

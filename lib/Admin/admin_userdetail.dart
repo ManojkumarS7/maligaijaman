@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class UserDetailPage extends StatefulWidget {
   final Map<String, dynamic> user;
@@ -139,8 +140,10 @@ class _UserDetailPageState extends State<UserDetailPage> {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        backgroundColor: Colors.green[700],
-        leading: BackButton(color: Colors.white),
+        backgroundColor: Appcolor.Appbarcolor,
+       leading: IconButton(
+           onPressed: () => Navigator.pop(context),
+        icon: Icon(Icons.arrow_back_ios,color: Colors.white,)),
         title: Text('User Details',
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         actions: [

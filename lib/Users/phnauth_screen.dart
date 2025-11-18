@@ -38,7 +38,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
     try {
       final response = await http.post(
 
-        Uri.parse("${Appconfig.baseurl}otp/check-otp.php"),
+        Uri.parse("${Appconfig.otpbase}/check-otp.php"),
 
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {'phone': phone},

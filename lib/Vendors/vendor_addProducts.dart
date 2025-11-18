@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class Category {
   final String id;
@@ -271,8 +272,12 @@ class _VendorAddProductsPageState extends State<VendorAddProductsPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Add Product'),
-        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text('Add Product', style: TextStyle(color: Colors.white),),
+        backgroundColor: Appcolor.Appbarcolor,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),

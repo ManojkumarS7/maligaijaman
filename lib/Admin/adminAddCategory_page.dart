@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class AddCategoryPage extends StatefulWidget {
   @override
@@ -152,8 +153,9 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          backgroundColor: Colors.green[700],
-        title: Text('Add Category'),
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, color: Colors.white,)),
+          backgroundColor: Appcolor.Appbarcolor,
+        title: Text('Add Category',style: TextStyle(color: Colors.white),),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),

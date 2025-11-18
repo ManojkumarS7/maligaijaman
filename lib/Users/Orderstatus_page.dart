@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class OrderStatusScreen extends StatelessWidget {
   final Map<String, dynamic> orderDetails;
@@ -32,6 +33,12 @@ class OrderStatusScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+
         title: Text(
           "Order Status",
           style: TextStyle(
@@ -40,7 +47,7 @@ class OrderStatusScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Color(0xFF2E7D32),
+        backgroundColor: Appcolor.Appbarcolor,
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.white),
       ),

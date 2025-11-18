@@ -7,6 +7,7 @@ import 'adress_Viewpage.dart';
 import '../main.dart';
 import 'home_page.dart';import 'package:flutter/services.dart'; // For Clipboard
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 
 class Review {
@@ -336,7 +337,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             fontWeight: FontWeight.w600,
           ),
         ),
-        backgroundColor:  Color(0xFF2E7D32),
+        backgroundColor: Appcolor.Appbarcolor,
         elevation: 2,
         // actions: [
         //   IconButton(

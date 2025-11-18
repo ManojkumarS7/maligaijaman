@@ -3,6 +3,7 @@ import 'myOrders_page.dart';
 import '../main.dart';
 import 'home_page.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class OrderSuccessPage extends StatelessWidget {
   const OrderSuccessPage({super.key});
@@ -13,7 +14,7 @@ class OrderSuccessPage extends StatelessWidget {
       // AppBar without a back button
       appBar: AppBar(
         title: const Text("Order Success"),
-        backgroundColor: const Color(0xFF2E7D32),
+        backgroundColor: Appcolor.Appbarcolor,
         automaticallyImplyLeading: false, // 👈 Hides the back button
       ),
       body: Center(

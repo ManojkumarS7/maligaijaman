@@ -86,7 +86,7 @@ class _BusinessIdPageState extends State<BusinessIdPage> {
       // Make the POST request
       final request = http.MultipartRequest(
         'POST',
-        Uri.parse('https://maligaijaman.rdegi.com/api/vendor_signup.php'),
+        Uri.parse('${Appconfig.baseurl}api/vendor_signup.php'),
       );
 
       // Add all fields

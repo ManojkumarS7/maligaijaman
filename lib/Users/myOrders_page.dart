@@ -8,6 +8,7 @@ import 'wishlist_screen.dart';
 import 'profile_page.dart';
 import 'order_DetailScreen.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class MyOrdersScreen extends StatefulWidget {
   const MyOrdersScreen({Key? key}) : super(key: key);
@@ -269,6 +270,12 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+
         title: const Text(
           " My Orders",
           style: TextStyle(
@@ -277,7 +284,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Color(0xFF2E7D32), // Golden yellow color
+        backgroundColor: Appcolor.Appbarcolor, // Golden yellow color
         elevation: 0,
         actions: [
           // Add refresh button

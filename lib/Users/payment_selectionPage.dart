@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:easy_upi_payment/easy_upi_payment.dart';
 import 'cardPayment_page.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class PaymentOptionsPage extends StatefulWidget {
   final Map<String, dynamic> selectedAddress;
@@ -264,8 +265,12 @@ class _PaymentOptionsPageState extends State<PaymentOptionsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Payment Options"),
-        backgroundColor: Color(0xFF2E7D32),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: const Text("Payment Options",style: TextStyle(color: Colors.white),),
+        backgroundColor: Appcolor.Appbarcolor,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

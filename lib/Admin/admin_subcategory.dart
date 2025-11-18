@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:maligaijaman/Admin/adminAddSubCate_page.dart';
 import 'package:maligaijaman/Admin/admin_subcatdetail.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class AdminSubCategoryListScreen extends StatefulWidget {
   const AdminSubCategoryListScreen({Key? key}) : super(key: key);
@@ -93,7 +94,7 @@ class _AdminSubCategoryListScreenState
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        backgroundColor: primaryColor,
+        backgroundColor: Appcolor.Appbarcolor,
         elevation: 4,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),

@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'adminAddCategory_page.dart';
 import 'admin_categorydetail.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class AdminCategoryListScreen extends StatefulWidget {
   const AdminCategoryListScreen({Key? key}) : super(key: key);
@@ -113,7 +114,7 @@ class _AdminCategoryListScreenState extends State<AdminCategoryListScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        backgroundColor: primaryColor,
+        backgroundColor: Appcolor.Appbarcolor,
         elevation: 4,
         title: const Text(
           "Categories",

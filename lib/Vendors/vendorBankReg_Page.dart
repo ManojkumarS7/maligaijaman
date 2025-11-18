@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'vendorBussinessID_Page.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class BankInformationPage extends StatefulWidget {
   // final String vendorId;
@@ -65,8 +66,17 @@ class _BankInformationPageState extends State<BankInformationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bank Information'),
-        backgroundColor: Colors.green.shade700,
+        title: const Text(
+          'Bank Information',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Appcolor.Appbarcolor, // Yellow background
+        elevation: 0,
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, color: Colors.white,)),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),

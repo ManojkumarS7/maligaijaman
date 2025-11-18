@@ -37,7 +37,7 @@ class _VendorPhoneAuthScreenState extends State<VendorPhoneAuthScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('${Appconfig.baseurl}otp/vendor-otp.php'),
+        Uri.parse('${Appconfig.otpbase}/vendor-otp.php'),
         // Uri.parse('https://cabnew.staging-rdegi.com/otp/check-otp.php'),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {'phone': phone},

@@ -10,6 +10,7 @@ import 'wishlist_screen.dart';
 import 'profile_page.dart';
 import 'home_page.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class ProductListScreen extends StatefulWidget {
   final String categoryId;
@@ -567,14 +568,14 @@ class _ProductListScreenState extends State<ProductListScreen> {
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           widget.categoryName,
-          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: const Color.fromRGBO(85, 139, 47, 1), // Yellow background color
+        backgroundColor: Appcolor.Appbarcolor, // Yellow background color
         elevation: 0,
       ),
       body: Column(

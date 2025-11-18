@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'vendor_login.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class VendorForgotPasswordPage extends StatefulWidget {
   const VendorForgotPasswordPage({Key? key}) : super(key: key);
@@ -207,14 +208,17 @@ class _VendorForgotPasswordPageState extends State<VendorForgotPasswordPage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        backgroundColor: Colors.green.shade700,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        title: const Text(
+          'Vendor ForgotPassword',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
+        backgroundColor: Appcolor.Appbarcolor, // Yellow background
+        elevation: 0,
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, color: Colors.white,)),
       ),
       body: SingleChildScrollView(
         child: Padding(

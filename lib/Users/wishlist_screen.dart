@@ -99,7 +99,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
       _secretKey = await _storage.read(key: 'key');
 
       final url =
-      Uri.parse('https://maligaijaman.rdegi.com/api/delete_wishlist.php');
+      Uri.parse('${Appconfig.baseurl}api/delete_wishlist.php');
       final Map<String, String> requestBody = {
         'id': productId,
         'jwt': _jwt!,

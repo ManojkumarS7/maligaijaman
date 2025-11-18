@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class Category {
   final String id;
@@ -203,9 +204,14 @@ class _AddOffersPageState extends State<AddOffersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: Text('Add Offers', style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500),),
-        backgroundColor: Color(0xFF2E7D32),
+        backgroundColor: Appcolor.Appbarcolor,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),

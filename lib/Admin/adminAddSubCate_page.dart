@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class Category {
   final String id;
@@ -203,7 +204,9 @@ class _AddSubCategoryPageState extends State<AddSubCategoryPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Add Subcategory'),
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, color: Colors.white,)),
+        backgroundColor: Appcolor.Appbarcolor,
+        title: Text('Add SubCategory',style: TextStyle(color: Colors.white),),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),

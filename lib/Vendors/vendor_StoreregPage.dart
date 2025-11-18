@@ -10,6 +10,7 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'vendorBankReg_Page.dart';
 import 'package:maligaijaman/apiconstants.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
 
 class StoreCategory {
   final String id;
@@ -184,8 +185,17 @@ class _VendorStoreInfoPageState extends State<VendorStoreRegPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Store Information'),
-        backgroundColor: Colors.green.shade700,
+        title: const Text(
+          'Store Information',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Appcolor.Appbarcolor, // Yellow background
+        elevation: 0,
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, color: Colors.white,)),
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
