@@ -1,10 +1,11 @@
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:maligaijaman/apiconstants.dart';
+import 'package:maligaijaman/appcolors.dart';
+import 'package:maligaijaman/Vendors/vendor_orders.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +27,6 @@ class MyApp extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-
         appBarTheme: const AppBarTheme(
           elevation: 0,
           centerTitle: true,
@@ -65,7 +65,7 @@ class Vendor {
   final String openingTime;
   final String closingTime;
   final String categoryIds;
-  String status; // Made non-final to allow status updates
+  String status;
 
   Vendor({
     required this.id,
@@ -97,7 +97,6 @@ class Vendor {
     );
   }
 
-  // Copy with method to create a new Vendor with updated status
   Vendor copyWith({String? newStatus}) {
     return Vendor(
       id: this.id,
@@ -122,15 +121,16 @@ class VendorApprovalScreen extends StatefulWidget {
   _VendorApprovalScreenState createState() => _VendorApprovalScreenState();
 }
 
-class _VendorApprovalScreenState extends State<VendorApprovalScreen> with SingleTickerProviderStateMixin {
+class _VendorApprovalScreenState extends State<VendorApprovalScreen>
+    with SingleTickerProviderStateMixin {
   List<Vendor> vendors = [];
   List<StoreCategory> availableCategories = [];
   bool isLoading = true;
   bool isLoadingCategories = true;
-  Map<String, String> categoriesMap = {}; // Maps category ID to name
+  Map<String, String> categoriesMap = {};
   final secureStorage = FlutterSecureStorage();
   late TabController _tabController;
-  String filterStatus = 'all'; // 'all', '0', '1', '2'
+  String filterStatus = 'all';
   String searchQuery = '';
   TextEditingController searchController = TextEditingController();
 
@@ -154,20 +154,19 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
 
   void _handleTabChange() {
     if (_tabController.indexIsChanging) return;
-
     setState(() {
       switch (_tabController.index) {
         case 0:
           filterStatus = 'all';
           break;
         case 1:
-          filterStatus = '0';  // Pending
+          filterStatus = '0';
           break;
         case 2:
-          filterStatus = '1';  // Approved
+          filterStatus = '1';
           break;
         case 3:
-          filterStatus = '2';  // Disapproved
+          filterStatus = '2';
           break;
       }
     });
@@ -179,8 +178,10 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
     });
 
     final url = Uri.parse("${Appconfig.baseurl}api/categorylist.php");
+
     try {
       final response = await http.get(url);
+
       if (response.statusCode == 200) {
         String responseBody = utf8.decode(response.bodyBytes);
         final List<dynamic> data = json.decode(responseBody);
@@ -191,7 +192,6 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
               .map((item) => StoreCategory.fromJson(item))
               .toList();
 
-          // Create a map for easy lookup of category names by ID
           for (var category in availableCategories) {
             categoriesMap[category.id] = category.name;
           }
@@ -200,7 +200,8 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
           isLoadingCategories = false;
         });
       } else {
-        throw Exception("Failed to load categories with status code: ${response.statusCode}");
+        throw Exception(
+            "Failed to load categories with status code: ${response.statusCode}");
       }
     } catch (e) {
       print("Error: $e");
@@ -218,10 +219,10 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
   String getCategoryNameById(String categoryId) {
     if (categoryId.isEmpty) return 'No category';
 
-    // Handle comma-separated category IDs
     if (categoryId.contains(',')) {
       List<String> ids = categoryId.split(',');
-      List<String> names = ids.map((id) => categoriesMap[id.trim()] ?? 'Unknown').toList();
+      List<String> names =
+      ids.map((id) => categoriesMap[id.trim()] ?? 'Unknown').toList();
       return names.join(', ');
     }
 
@@ -230,7 +231,7 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
 
   Future<void> fetchVendors() async {
     setState(() {
-      isLoading = true; // Show loading indicator while refreshing
+      isLoading = true;
     });
 
     final url = Uri.parse("${Appconfig.baseurl}api/store_list_admin.php");
@@ -240,7 +241,6 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
       String responseBody = utf8.decode(response.bodyBytes);
 
       if (response.statusCode == 200) {
-        // Parse the response as a List<dynamic>
         final List<dynamic> data = json.decode(responseBody);
 
         setState(() {
@@ -262,19 +262,17 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
       }
     }
   }
-// Add this method to the _VendorApprovalScreenState class
 
   Future<void> _confirmStatusChange(Vendor vendor, String newStatus) async {
-    // Get status text for better UX
     String statusText = newStatus == '1' ? 'approve' : 'disapprove';
     String statusTextPast = newStatus == '1' ? 'approved' : 'disapproved';
 
-    // Show confirmation dialog
-    bool? confirm = await showDialog<bool>(
+    bool? confirm = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Confirm ${statusText.capitalize()}'),
-        content: Text('Are you sure you want to $statusText "${vendor.storeName}"?'),
+        content: Text(
+            'Are you sure you want to $statusText "${vendor.storeName}"?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
@@ -291,10 +289,8 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
       ),
     );
 
-    // If user didn't confirm, do nothing
     if (confirm != true) return;
 
-    // Show loading indicator
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: LinearProgressIndicator(),
@@ -303,9 +299,7 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
     );
 
     try {
-      // Call API to update vendor status
       final url = Uri.parse("${Appconfig.baseurl}api/shop_approve.php");
-
       final response = await http.post(
         url,
         body: {
@@ -314,43 +308,36 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
         },
       );
 
-      // Hide loading indicator
       ScaffoldMessenger.of(context).clearSnackBars();
 
       if (response.statusCode == 200) {
-        // Parse response
         final responseData = json.decode(response.body);
 
-        // Check if the update was successful
         if (responseData['status'] == 'success') {
-          // Update local state
           setState(() {
-            // Find and update the vendor status in our list
             final index = vendors.indexWhere((v) => v.id == vendor.id);
             if (index != -1) {
               vendors[index] = vendor.copyWith(newStatus: newStatus);
             }
           });
 
-          // Show success message
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Vendor ${statusTextPast} successfully'),
+              content: Text('Vendor $statusTextPast successfully'),
               backgroundColor: Colors.green,
               duration: const Duration(seconds: 2),
             ),
           );
         } else {
-          // Show error message from API
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Message: ${responseData['message'] ?? 'Unknown error'}'),
+              content:
+              Text('Message: ${responseData['message'] ?? 'Unknown error'}'),
               backgroundColor: Colors.green,
             ),
           );
         }
       } else {
-        // Handle HTTP error
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('HTTP Error: ${response.statusCode}'),
@@ -359,14 +346,30 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
         );
       }
     } catch (e) {
-      // Hide loading indicator
       ScaffoldMessenger.of(context).clearSnackBars();
 
-      // Show error message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to update vendor status: $e'),
           backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _navigateToVendorOrders(Vendor vendor) async {
+    // Store vendor ID in secure storage
+    await secureStorage.write(key: 'vendor_id', value: vendor.id);
+    await secureStorage.write(key: 'vendor_name', value: vendor.storeName);
+
+    // Navigate to orders screen
+    if (mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => VendorOrdersScreen(
+
+          ),
         ),
       );
     }
@@ -401,7 +404,6 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
   Widget _buildActionButton(Vendor vendor) {
     final status = vendor.status;
 
-    // If approved (status = 1), show only Disapprove button
     if (status == '1') {
       return ElevatedButton.icon(
         icon: const Icon(Icons.close, color: Colors.white),
@@ -412,9 +414,7 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
         ),
         onPressed: () => _confirmStatusChange(vendor, '2'),
       );
-    }
-    // If pending (status = 0) or disapproved (status = 2), show only Approve button
-    else {
+    } else {
       return ElevatedButton.icon(
         icon: const Icon(Icons.check, color: Colors.white),
         label: const Text('Approve'),
@@ -430,12 +430,11 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
   String _formatTime(String time) {
     if (time.isEmpty) return 'Not specified';
 
-    // Try to parse the time in standard format
     try {
       final timeValue = DateFormat('HH:mm:ss').parse(time.split('.')[0]);
-      return DateFormat('h:mm a').format(timeValue); // Format as 12-hour time with AM/PM
+      return DateFormat('h:mm a').format(timeValue);
     } catch (e) {
-      return time.split('.')[0]; // If parsing fails, just return the original time without milliseconds
+      return time.split('.')[0];
     }
   }
 
@@ -470,12 +469,10 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
 
   List<Vendor> _getFilteredVendors() {
     return vendors.where((vendor) {
-      // Filter by status
       if (filterStatus != 'all' && vendor.status != filterStatus) {
         return false;
       }
 
-      // Filter by search query
       if (searchQuery.isNotEmpty) {
         final query = searchQuery.toLowerCase();
         return vendor.storeName.toLowerCase().contains(query) ||
@@ -483,7 +480,9 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
             vendor.address.toLowerCase().contains(query) ||
             vendor.city.toLowerCase().contains(query) ||
             vendor.state.toLowerCase().contains(query) ||
-            getCategoryNameById(vendor.categoryIds).toLowerCase().contains(query);
+            getCategoryNameById(vendor.categoryIds)
+                .toLowerCase()
+                .contains(query);
       }
 
       return true;
@@ -496,7 +495,18 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Vendor Approval System'),
+        title: const Text('Vendor Management',
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold)),
+        backgroundColor: Appcolor.Appbarcolor,
+        leading: IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            )),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(100),
           child: Column(
@@ -539,9 +549,15 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
                 isScrollable: true,
                 tabs: [
                   Tab(text: 'All (${vendors.length})'),
-                  Tab(text: 'Pending (${vendors.where((v) => v.status == '0').length})'),
-                  Tab(text: 'Approved (${vendors.where((v) => v.status == '1').length})'),
-                  Tab(text: 'Disapproved (${vendors.where((v) => v.status == '2').length})'),
+                  Tab(
+                      text:
+                      'Pending (${vendors.where((v) => v.status == '0').length})'),
+                  Tab(
+                      text:
+                      'Approved (${vendors.where((v) => v.status == '1').length})'),
+                  Tab(
+                      text:
+                      'Disapproved (${vendors.where((v) => v.status == '2').length})'),
                 ],
               ),
             ],
@@ -549,7 +565,10 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh),
+            icon: const Icon(
+              Icons.refresh,
+              color: Colors.white,
+            ),
             onPressed: () {
               fetchCategories().then((_) {
                 fetchVendors();
@@ -593,14 +612,18 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
           final vendor = filteredVendors[index];
 
           return Card(
-            margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+            margin: const EdgeInsets.symmetric(
+                vertical: 8.0, horizontal: 4.0),
             child: ExpansionTile(
-              tilePadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              tilePadding: const EdgeInsets.symmetric(
+                  horizontal: 16.0, vertical: 8.0),
               childrenPadding: const EdgeInsets.all(16.0),
               leading: CircleAvatar(
                 backgroundColor: getStatusColor(vendor.status),
                 child: Text(
-                  vendor.storeName.isNotEmpty ? vendor.storeName[0].toUpperCase() : '?',
+                  vendor.storeName.isNotEmpty
+                      ? vendor.storeName[0].toUpperCase()
+                      : '?',
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
@@ -628,14 +651,16 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
                           color: getStatusColor(vendor.status),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           getStatusText(vendor.status),
-                          style: const TextStyle(color: Colors.white, fontSize: 12),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 12),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -656,13 +681,34 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
                   children: [
                     const Divider(),
                     _buildInfoRow('Description', vendor.description),
+
+                    // View Orders Button - Added here
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: OutlinedButton.icon(
+                        icon: const Icon(Icons.receipt_long),
+                        label: const Text('View Receiving Orders'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Appcolor.Appbarcolor,
+                          side: BorderSide(color: Appcolor.Appbarcolor),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
+                        ),
+                        onPressed: () => _navigateToVendorOrders(vendor),
+                      ),
+                    ),
+
+                    const Divider(),
                     _buildInfoRow('Address', vendor.address),
                     _buildInfoRow('City', vendor.city),
                     _buildInfoRow('State', vendor.state),
                     _buildInfoRow('Pincode', vendor.pincode),
-                    _buildInfoRow('Opening Time', _formatTime(vendor.openingTime)),
-                    _buildInfoRow('Closing Time', _formatTime(vendor.closingTime)),
-                    _buildInfoRow('Categories', getCategoryNameById(vendor.categoryIds)),
+                    _buildInfoRow('Opening Time',
+                        _formatTime(vendor.openingTime)),
+                    _buildInfoRow('Closing Time',
+                        _formatTime(vendor.closingTime)),
+                    _buildInfoRow('Categories',
+                        getCategoryNameById(vendor.categoryIds)),
                     const SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -681,7 +727,7 @@ class _VendorApprovalScreenState extends State<VendorApprovalScreen> with Single
   }
 }
 
-// Helper extension
+
 extension StringExtension on String {
   String capitalize() {
     return '${this[0].toUpperCase()}${substring(1)}';

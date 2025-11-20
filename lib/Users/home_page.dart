@@ -1439,6 +1439,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       final unitPrice = double.tryParse(
                           product['price']?.toString() ?? '0.0') ?? 0.0;
                       final quantity = _quantities[productId] ?? 1;
+                      final vendorid = product['vendor_id'];
 
                       Navigator.push(
                           context,
@@ -1452,6 +1453,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       'No description',
                                   imageUrl: imageUrl,
                                   quantity: quantity,
+                                  vendorid: vendorid,
                                 ),
                           )
                       );
@@ -1885,6 +1887,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   '';
               final price = product['price']?.toString() ?? 'N/A';
               final name = product['name'] ?? 'Unnamed Product';
+              final vendorid = product['vendor_id'];
 
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
@@ -1895,6 +1898,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     final unitPrice = double.tryParse(price) ?? 0.0;
                     final originalUnitPrice = unitPrice + 10;
                     final quantity = _quantities[productId] ?? 1;
+
 
                     Navigator.push(
                       context,
@@ -1909,6 +1913,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     'No description',
                                 imageUrl: imagePath,
                                 quantity: quantity,
+                                vendorid: vendorid,
                               ),
                               bottomNavigationBar: BottomNavigationBar(
                                 items: const <BottomNavigationBarItem>[
@@ -2248,6 +2253,7 @@ class _HomeScreenState extends State<HomeScreen> {
             final productId = product['id'];
             final unitPrice = double.tryParse(price) ?? 0.0;
             final quantity = _quantities[productId] ?? 1;
+            final vendorid = product['vendor_id'];
 
             return GestureDetector(
               onTap: () {
@@ -2261,6 +2267,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       description: product['description'] ?? 'No description',
                       imageUrl: imagePath,
                       quantity: quantity,
+                      vendorid: vendorid,
                     ),
                   ),
                 );

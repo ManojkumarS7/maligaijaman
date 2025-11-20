@@ -477,6 +477,7 @@ class _CartScreenState extends State<CartScreen> {
     final currentPrice = _prices[productId] ?? basePrice;
     final description = item['description'] ?? 'No description';
     final quantity = 1; // Replace if you have actual quantity data
+    final vendorid = item['vendor_id'];
 
     return GestureDetector(
       onTap: () {
@@ -491,6 +492,7 @@ class _CartScreenState extends State<CartScreen> {
                   description: description,
                   imageUrl: imageUrl,
                   quantity: quantity,
+                  vendorid: vendorid,
                 ),
           ),
         );

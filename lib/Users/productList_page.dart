@@ -32,6 +32,7 @@ class Product {
   final double originalPrice;
   final String imageUrl;
   final String id;
+  final String vendorid;
   final String supplier;
 
   Product({
@@ -40,6 +41,7 @@ class Product {
     required this.originalPrice,
     required this.imageUrl,
     required this.id,
+    required this.vendorid,
     required this.supplier,
   });
 
@@ -48,6 +50,7 @@ class Product {
       id: json['id'] ?? '',
       name: json['name'] ?? '',
       price: double.tryParse(json['price'].toString()) ?? 0.0,
+      vendorid: json['vendor_id'] ?? '',
       originalPrice: double.tryParse(json['original_price']?.toString() ?? json['price'].toString()) ?? 0.0,
       imageUrl: json['image_url'] ?? '',
       supplier: json['supplier'] ?? 'Tradly',
@@ -670,6 +673,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
     print('Raw image_path: ${product['image_path']}');
     print('Image_path type: ${product['image_path'].runtimeType}');
     print('Full product data: $product');
+
     print('========================');
 
     // Get the raw image path exactly as it comes from the API
@@ -711,6 +715,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                   productPrice: unitPrice,
                   quantity: quantity,
                   imageUrl: imageUrl,
+                  vendorid: vendor_id,
                 ),
                 bottomNavigationBar: BottomNavigationBar(
                   items: const <BottomNavigationBarItem>[

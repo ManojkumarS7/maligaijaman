@@ -247,6 +247,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
     final productId = product['id'];
     final name = product['Product_name'] ?? 'Unnamed Product';
     final imageUrl = product['img_path'] ?? '';
+    final vendorid = product['vendor_id'];
     final unitPrice = double.tryParse(
         product['product_price']?.toString() ?? '0.0') ??
         0.0;
@@ -267,6 +268,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
               description: product['description'] ?? 'No description',
               imageUrl: imageUrl,
               quantity: 1,
+              vendorid: vendorid,
             ),
           ),
         );

@@ -162,7 +162,7 @@ class _VendorDashboardState extends State<VendorDashboard> with SingleTickerProv
       }
 
       final apiUrl =
-          'https://cabnew.staging-rdegi.com/api/store_list.php?jwt=$jwt&secretkey=$secretKey';
+          'https://maligaijaman-app.staging-rdegi.com/api/store_list.php?jwt=$jwt&secretkey=$secretKey';
       print('API URL: $apiUrl');
 
       final request = http.Request('GET', Uri.parse(apiUrl))

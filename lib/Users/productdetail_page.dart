@@ -16,6 +16,8 @@ class Review {
   final String username;
   final String review;
   final String date;
+  final int rating ;
+
 
   Review({
     required this.id,
@@ -23,6 +25,8 @@ class Review {
     required this.username,
     required this.review,
     required this.date,
+    required this.rating
+
   });
 
   factory Review.fromJson(Map<String, dynamic> json) {
@@ -32,6 +36,7 @@ class Review {
       username: json['username'],
       review: json['review'],
       date: json['date'],
+      rating:  int.parse(json['review_count']),
     );
   }
 }
@@ -43,6 +48,8 @@ class CheckoutScreen extends StatefulWidget {
   final int quantity;
   final String imageUrl;
   final String description;
+  final String vendorid;
+
 
   const CheckoutScreen({
     Key? key,
@@ -52,6 +59,7 @@ class CheckoutScreen extends StatefulWidget {
     required this.quantity,
     required this.imageUrl,
     this.description = 'No description available.',
+    required this.vendorid,
   }) : super(key: key);
 
 
@@ -70,9 +78,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   String? _username;
   final TextEditingController _reviewController = TextEditingController();
 
-  List<Review> reviews = []; // Change type from Map to Review
+  List<Review> reviews = [];
   bool isLoadingReviews = true;
-
+  int _rating = 0;
   @override
   void initState() {
     super.initState();
@@ -112,7 +120,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         key: "product_price", value: widget.productPrice.toString());
     await _storage.write(key: "product_quantity", value: quantity.toString());
     await _storage.write(key: "product_image", value: widget.imageUrl);
-
+    await _storage.write(key: "vendor_id", value: widget.vendorid);
     print("Product Details stored in Secure Storage.");
   }
 
@@ -140,7 +148,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     }
   }
 
-// 3. Separate the server call into its own method:
+
   Future<List<Review>> _fetchReviewsFromServer() async {
     final url = Uri.parse('${Appconfig.baseurl}api/review.php');
     final response = await http.get(url);
@@ -197,6 +205,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         'product_id': widget.productId,
         'username': _username,
         'review': _reviewController.text.trim(),
+        'review_count': _rating.toString(),
       };
 
       final response = await http.post(
@@ -245,8 +254,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       );
     }
   }
-
-
 
   Future<void> addToCart(String productId, String productName,
       double productPrice, int qty) async {
@@ -422,22 +429,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ),
                         ),
                         SizedBox(width: 25),
-                        // Container(
-                        //   padding: EdgeInsets.symmetric(
-                        //       horizontal: 4, vertical: 4),
-                        //   decoration: BoxDecoration(
-                        //     color: Colors.green,
-                        //     borderRadius: BorderRadius.circular(4),
-                        //   ),
-                        //   child: Text(
-                        //     '20% OFF',
-                        //     style: TextStyle(
-                        //       color: Colors.white,
-                        //       fontWeight: FontWeight.bold,
-                        //       fontSize: 8,
-                        //     ),
-                        //   ),
-                        // ),
+
 
                         GestureDetector(
                           onTap: () {
@@ -650,6 +642,42 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               ),
                             ),
 
+                            SizedBox(height: 8),
+
+
+
+                            Row(
+                              children: [
+                                Text(
+                                  'Your Rating:',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                SizedBox(width: 8),
+
+                                // 5 Stars
+                                Row(
+                                  children: List.generate(5, (index) {
+                                    final starIndex = index + 1;
+                                    return GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _rating = starIndex.toInt();
+                                        });
+                                      },
+                                      child: Icon(
+                                        Icons.star,
+                                        size: 28,
+                                        color: _rating >= starIndex ? Colors.amber : Colors.grey,
+                                      ),
+                                    );
+                                  }),
+                                ),
+                              ],
+                            ),
+
                             SizedBox(height: 16),
 
                             // Reviews list
@@ -674,12 +702,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   ),
                                 )
                               else
+
                                 ListView.builder(
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
                                   itemCount: reviews.length,
                                   itemBuilder: (context, index) {
                                     final review = reviews[index];
+
                                     return Container(
                                       margin: EdgeInsets.only(bottom: 12),
                                       padding: EdgeInsets.all(12),
@@ -711,6 +741,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                       review.username,
                                                       style: TextStyle(fontWeight: FontWeight.bold),
                                                     ),
+
                                                     Text(
                                                       review.date != '0000-00-00'
                                                           ? review.date
@@ -725,6 +756,23 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                               ),
                                             ],
                                           ),
+
+
+
+                                          SizedBox(height: 8),
+
+                                          // ⭐ ADD STAR DISPLAY HERE
+                                          Row(
+                                            children: List.generate(5, (index) {
+                                              return Icon(
+                                                index < review.rating ? Icons.star : Icons.star_border,
+                                                color: Colors.amber,
+                                                size: 20,
+                                              );
+                                            }),
+                                          ),
+
+
                                           SizedBox(height: 8),
                                           Text(
                                             review.review,

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:maligaijaman/apiconstants.dart';
 import 'package:maligaijaman/appcolors.dart';
+import 'package:maligaijaman/Users/myOrders_page.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'admin_userOrders.dart';
 
 class UserDetailPage extends StatefulWidget {
   final Map<String, dynamic> user;
@@ -18,7 +21,10 @@ class _UserDetailPageState extends State<UserDetailPage> {
   late TextEditingController emailController;
   late TextEditingController phoneController;
   late TextEditingController passwordController;
+  final _storage = const FlutterSecureStorage();
   bool isLoading = false;
+
+  String userid = "";
 
   @override
   void initState() {
@@ -188,6 +194,41 @@ class _UserDetailPageState extends State<UserDetailPage> {
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton.icon(
+                    onPressed: () async {
+                      // Write user_id to storage (returns Future<void>, not String)
+                      await _storage.write(key: 'user_id', value: widget.user['id']);
+
+                      // Then navigate
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AdminUserorders()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green[600],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    icon: isLoading
+                        ? SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(
+                          strokeWidth: 2, color: Colors.white),
+                    )
+                        : Icon(Icons.shopping_cart_outlined, color: Colors.white),
+                    label: Text(
+                      "Orders",
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 30),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton.icon(
                     onPressed: isLoading ? null : updateUser,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green[600],
@@ -208,7 +249,8 @@ class _UserDetailPageState extends State<UserDetailPage> {
                       style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
-                )
+                ),
+
               ],
             ),
           ),

@@ -1,6 +1,3 @@
-
-
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -21,15 +18,28 @@ class OrderDetailPage extends StatefulWidget {
 class _OrderDetailPageState extends State<OrderDetailPage> {
   final _storage = const FlutterSecureStorage();
   bool isLoading = true;
+  bool isReordering = false;
   List<dynamic> orderItems = [];
   double subtotal = 0.0;
-  double deliveryCharge = 40.0; // Default delivery charge
-  String orderStatus = "Processing"; // Default status
+  double deliveryCharge = 40.0;
+  String orderStatus = "Processing";
+  String? _jwt;
+  String? _secretKey;
+  String? _userid;
+  String? _address;
 
   @override
   void initState() {
     super.initState();
+    _loadUserData();
     fetchOrderDetails();
+  }
+
+  Future<void> _loadUserData() async {
+    _jwt = await _storage.read(key: 'jwt');
+    _secretKey = await _storage.read(key: 'key');
+    _userid = await _storage.read(key: 'user_id');
+    _address = await _storage.read(key: 'address');
   }
 
   Future<void> fetchOrderDetails() async {
@@ -62,7 +72,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             .where((item) => item['order_id'] == widget.orderId)
             .toList();
 
-        // Calculate subtotal
         double total = 0.0;
         for (var item in filtered) {
           double price = 0.0;
@@ -72,15 +81,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             final productPrice = item['price'] ?? item['product_price'] ?? '0';
             final quantity = item['Product_qty'] ?? item['quantity'] ?? '1';
 
-            if (productPrice
-                .toString()
-                .isNotEmpty) {
+            if (productPrice.toString().isNotEmpty) {
               price = double.parse(productPrice.toString());
             }
 
-            if (quantity
-                .toString()
-                .isNotEmpty) {
+            if (quantity.toString().isNotEmpty) {
               qty = int.parse(quantity.toString());
             }
 
@@ -90,7 +95,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           }
         }
 
-        // Determine order status based on some logic (example)
         String status = "Processing";
         if (filtered.isNotEmpty) {
           final statusCode = filtered[0]['status'] ?? '1';
@@ -122,17 +126,129 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     }
   }
 
+  Future<void> _reorderProducts() async {
+
+    if (orderItems.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('No products to reorder'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      isReordering = true;
+    });
+
+    try {
+      final url = Uri.parse("${Appconfig.baseurl}api/conformorderinsert.php");
+      int successCount = 0;
+      int failCount = 0;
+
+      for (var product in orderItems) {
+        try {
+          print("Reordering: ${product['Product_name']}");
+
+          final response = await http.post(
+            url,
+            body: {
+              "jwt": _jwt!,
+              "secretkey": _secretKey!,
+              "user_id": _userid ?? '',
+              "productid": (product['product_id'] ?? product['productid'] ?? product['id'] ?? '').toString(),
+              "productname": product['Product_name'] ?? product['product_name'] ?? '',
+              "productprice": (product['price'] ?? product['product_price'] ?? '0').toString(),
+              "price": (product['price'] ?? product['product_price'] ?? '0').toString(),
+              "quantity": (product['Product_qty'] ?? product['quantity'] ?? '1').toString(),
+              "qty": (product['Product_qty'] ?? product['quantity'] ?? '1').toString(),
+              "vendor_id": (product['vendor_id'] ?? '').toString(),
+              "is_from_cart": "0",
+              "address": _address ?? '',
+            },
+          );
+
+          print("Reorder Response (${response.statusCode}): ${response.body}");
+
+          if (response.statusCode == 200) {
+            final responseData = json.decode(response.body);
+            // Check if response contains success indicator
+            if (responseData is Map &&
+                (responseData['success'] == true ||
+                    responseData['status'] == 'success' ||
+                    response.body.contains('success'))) {
+              successCount++;
+              print("Successfully reordered: ${product['Product_name']}");
+            } else {
+              failCount++;
+              print("Failed to reorder: ${product['Product_name']}");
+            }
+          } else {
+            failCount++;
+            print("Failed to reorder: ${product['Product_name']} - Status: ${response.statusCode}");
+          }
+        } catch (e) {
+          failCount++;
+          print("Error reordering ${product['Product_name']}: $e");
+        }
+      }
+
+      setState(() {
+        isReordering = false;
+      });
+
+      // Show result
+      if (successCount > 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              failCount > 0
+                  ? 'Reordered $successCount items. $failCount failed.'
+                  : 'Successfully reordered all $successCount items!',
+            ),
+            backgroundColor: failCount > 0 ? Colors.orange : Colors.green,
+            duration: Duration(seconds: 3),
+            action: SnackBarAction(
+              label: 'View Orders',
+              textColor: Colors.white,
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to reorder items. Please try again.'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        isReordering = false;
+      });
+      print("Error in reorder process: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('An error occurred while reordering'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
-
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
-
         title: const Text(
           "Order Details",
           style: TextStyle(
@@ -141,13 +257,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Appcolor.Appbarcolor, // Golden yellow color
+        backgroundColor: Appcolor.Appbarcolor,
         elevation: 0,
         actions: [
-          // Status button in app bar
           ElevatedButton.icon(
             onPressed: () {
-              // Create an order details map with the required information
               Map<String, dynamic> statusDetails = {
                 'id': widget.orderId,
                 'status': orderItems.isNotEmpty
@@ -219,7 +333,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           SizedBox(height: 24),
           ElevatedButton(
             onPressed: () {
-              // Navigate to shopping page
               Navigator.of(context).pop();
             },
             child: Text('Start Shopping'),
@@ -235,12 +348,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   }
 
   Widget _buildOrderBillView() {
-    // Calculate the final total including delivery charge
     final totalAmount = subtotal + deliveryCharge;
 
     return Column(
       children: [
-        // Order ID and Date Header
         Container(
           width: double.infinity,
           padding: EdgeInsets.all(16),
@@ -276,10 +387,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             ],
           ),
         ),
-
         SizedBox(height: 8),
-
-        // Bill Items
         Expanded(
           child: ListView.separated(
             padding: const EdgeInsets.all(16),
@@ -288,7 +396,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             itemBuilder: (context, index) {
               final order = orderItems[index];
 
-              // Safe extraction of values with null handling
               final productName = order['Product_name'] ??
                   order['product_name'] ?? 'Unknown Product';
               final productPrice = order['price'] ?? order['product_price'] ??
@@ -297,14 +404,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               final imagePath = order['img_path'] ?? order['image_path'] ??
                   order['image'] ?? '';
 
-              // Parse price and quantity safely
               double price = 0.0;
               int qty = 1;
 
               try {
-                if (productPrice
-                    .toString()
-                    .isNotEmpty) {
+                if (productPrice.toString().isNotEmpty) {
                   price = double.parse(productPrice.toString());
                 }
               } catch (e) {
@@ -312,9 +416,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               }
 
               try {
-                if (quantity
-                    .toString()
-                    .isNotEmpty) {
+                if (quantity.toString().isNotEmpty) {
                   qty = int.parse(quantity.toString());
                 }
               } catch (e) {
@@ -332,7 +434,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Product image
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.network(
@@ -350,7 +451,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       ),
                     ),
                     const SizedBox(width: 16),
-                    // Product details
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -373,7 +473,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                         ],
                       ),
                     ),
-                    // Item total
                     Text(
                       '₹${itemTotal.toStringAsFixed(2)}',
                       style: TextStyle(
@@ -387,8 +486,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             },
           ),
         ),
-
-        // Bill Summary (Fixed at bottom)
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -403,7 +500,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           padding: EdgeInsets.all(16),
           child: Column(
             children: [
-              // Subtotal
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -418,8 +514,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 ],
               ),
               SizedBox(height: 8),
-
-              // Delivery Fee
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -434,8 +528,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 ],
               ),
               Divider(height: 24),
-
-              // Total
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -457,22 +549,32 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 ],
               ),
               SizedBox(height: 16),
-
-              // Reorder Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Implement reorder functionality
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Reordering...'))
-                    );
-                  },
-                  child: Text('Reorder'),
+                  onPressed: isReordering ? null : _reorderProducts,
+                  child: isReordering
+                      ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Text('Reordering...'),
+                    ],
+                  )
+                      : Text('Reorder'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF2E7D32),
                     foregroundColor: Colors.white,
                     padding: EdgeInsets.symmetric(vertical: 12),
+                    disabledBackgroundColor: Colors.grey,
                   ),
                 ),
               ),
@@ -483,7 +585,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     );
   }
 
-  // Helper methods
   String _formatDate(String dateStr) {
     if (dateStr.length >= 10) {
       return dateStr.substring(0, 10);
@@ -505,5 +606,4 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         return Colors.grey;
     }
   }
-
 }

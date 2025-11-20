@@ -51,6 +51,8 @@ class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
       final url = Uri.parse(
           "${Appconfig.baseurl}api/vendor_order_list.php?vendor_id=$vendorId");
 
+      print(url);
+
       final response = await http.get(url).timeout(
         const Duration(seconds: 15),
         onTimeout: () {

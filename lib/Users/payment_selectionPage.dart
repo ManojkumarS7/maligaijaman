@@ -51,6 +51,8 @@ class _PaymentOptionsPageState extends State<PaymentOptionsPage> {
     _userid = await _storage.read(key: 'user_id');
     _vendorId = await _storage.read(key: 'vendor_id');
     _address = await _storage.read(key: 'address');
+
+    print('vendor id is $_vendorId');
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
@@ -108,72 +110,150 @@ class _PaymentOptionsPageState extends State<PaymentOptionsPage> {
     }
 
     try {
+      /// --------------------------------------------------------
+      /// CASE 1: CONFIRM ORDER FROM CART
+      /// --------------------------------------------------------
       if (widget.isFromCart) {
-        // If from cart, use the cart confirmation endpoint
-        final url = Uri.parse(
-            "${Appconfig.baseurl}api/addcart_confirm.php");
+        final url = Uri.parse("${Appconfig.baseurl}api/addcart_confirm.php");
 
-        var request = http.MultipartRequest('POST', url);
+        print("Submitting CART ORDER for user: $_userid");
 
-        request.fields['user_id'] = _userid ?? '';
-        request.fields['addrerss'] = _address ?? '';
+        final response = await http.post(
+          url,
+          body: {
+            "user_id": _userid ?? '',
+            "address": _address ?? '',
+          },
+        );
 
-        print("Submitting cart order with userid: $_userid");
-
-        var streamedResponse = await request.send();
-        var response = await http.Response.fromStream(streamedResponse);
+        print("Cart Response (${response.statusCode}): ${response.body}");
 
         if (response.statusCode == 200) {
-          print("Cart order successfully confirmed");
-          print("Response body: ${response.body}");
+          print("Cart order confirmed successfully");
         } else {
-          print("Failed to confirm cart order: ${response.statusCode}");
-          print("Response body: ${response.body}");
-          throw Exception("Cart order confirmation failed with status ${response.statusCode}");
+          throw Exception("Cart order error: ${response.statusCode}");
         }
-      } else {
-        // Direct product purchase - use the original endpoint
-        final url = Uri.parse(
-            "${Appconfig.baseurl}api/conformorderinsert.php");
 
-        // Direct product purchase - post each product individually
-        for (var product in widget.productDetails) {
-          var request = http.MultipartRequest('POST', url);
+        return; // Stop here
+      }
 
-          // Add all required fields
-          request.fields['jwt'] = _jwt!;
-          request.fields['secretkey'] = _secretKey!;
-          request.fields['user_id'] = _userid ?? '';
-          request.fields['productid'] = product['id'].toString();
-          request.fields['productname'] = product['Product_name'];
-          request.fields['productprice'] = product['product_price'].toString();
-          request.fields['price'] = product['product_price'].toString();
-          request.fields['quantity'] = product['Product_qty'].toString();
-          request.fields['qty'] = product['Product_qty'].toString();
-          request.fields['vendor_id'] =
-              product['vendor_id']?.toString() ?? _vendorId ?? '';
-          request.fields['is_from_cart'] = '0';
-          request.fields['address'] = _address ?? '';
 
-          print("Submitting direct product order data: ${request.fields}");
+      final url = Uri.parse("${Appconfig.baseurl}api/conformorderinsert.php");
 
-          var streamedResponse = await request.send();
-          var response = await http.Response.fromStream(streamedResponse);
+      for (var product in widget.productDetails) {
+        print("Sending DIRECT ORDER for: ${product['Product_name']}");
 
-          if (response.statusCode == 200) {
-            print("Direct order successfully confirmed for ${product['Product_name']}");
-            print("Response body: ${response.body}");
-          } else {
-            print("Failed to confirm direct order: ${response.statusCode}");
-            print("Response body: ${response.body}");
-            throw Exception("Direct order confirmation failed with status ${response.statusCode}");
-          }
+        final response = await http.post(
+          url,
+          body: {
+            "jwt": _jwt!,
+            "secretkey": _secretKey!,
+            "user_id": _userid ?? '',
+            "productid": product['id'].toString(),
+            "productname": product['Product_name'],
+            "productprice": product['product_price'].toString(),
+            "price": product['product_price'].toString(),
+            "quantity": product['Product_qty'].toString(),
+            "qty": product['Product_qty'].toString(),
+            "vendor_id":
+            product['vendor_id']?.toString() ?? _vendorId ?? '',
+            "is_from_cart": "0",
+            "address": _address ?? '',
+          },
+        );
+
+        print("Direct Response (${response.statusCode}): ${response.body}");
+
+        if (response.statusCode == 200) {
+          print("Order confirmed for: ${product['Product_name']}");
+        } else {
+          throw Exception("Direct order failed: ${response.statusCode}");
         }
       }
     } catch (e) {
       print("Error confirming order: $e");
     }
   }
+
+
+  // Future<void> _confirmOrder() async {
+  //   if (_jwt == null || _secretKey == null) {
+  //     print("Missing JWT or secret key");
+  //     return;
+  //   }
+  //
+  //   if (widget.productDetails.isEmpty) {
+  //     print("No products to confirm");
+  //     return;
+  //   }
+  //
+  //   try {
+  //     if (widget.isFromCart) {
+  //       // If from cart, use the cart confirmation endpoint
+  //       final url = Uri.parse(
+  //           "${Appconfig.baseurl}api/addcart_confirm.php");
+  //
+  //       var request = http.MultipartRequest('POST', url);
+  //
+  //       request.fields['user_id'] = _userid ?? '';
+  //       request.fields['addrerss'] = _address ?? '';
+  //
+  //       print("Submitting cart order with userid: $_userid");
+  //
+  //       var streamedResponse = await request.send();
+  //       var response = await http.Response.fromStream(streamedResponse);
+  //
+  //       if (response.statusCode == 200) {
+  //         print("Cart order successfully confirmed");
+  //         print("Response body: ${response.body}");
+  //       } else {
+  //         print("Failed to confirm cart order: ${response.statusCode}");
+  //         print("Response body: ${response.body}");
+  //         throw Exception("Cart order confirmation failed with status ${response.statusCode}");
+  //       }
+  //     } else {
+  //       // Direct product purchase - use the original endpoint
+  //       final url = Uri.parse(
+  //           "${Appconfig.baseurl}api/conformorderinsert.php");
+  //
+  //       // Direct product purchase - post each product individually
+  //       for (var product in widget.productDetails) {
+  //         var request = http.MultipartRequest('POST', url);
+  //
+  //         // Add all required fields
+  //         request.fields['jwt'] = _jwt!;
+  //         request.fields['secretkey'] = _secretKey!;
+  //         request.fields['user_id'] = _userid ?? '';
+  //         request.fields['productid'] = product['id'].toString();
+  //         request.fields['productname'] = product['Product_name'];
+  //         request.fields['productprice'] = product['product_price'].toString();
+  //         request.fields['price'] = product['product_price'].toString();
+  //         request.fields['quantity'] = product['Product_qty'].toString();
+  //         request.fields['qty'] = product['Product_qty'].toString();
+  //         request.fields['vendor_id'] =
+  //             product['vendor_id']?.toString() ?? _vendorId ?? '';
+  //         request.fields['is_from_cart'] = '0';
+  //         request.fields['address'] = _address ?? '';
+  //
+  //         print("Submitting direct product order data: ${request.fields}");
+  //
+  //         var streamedResponse = await request.send();
+  //         var response = await http.Response.fromStream(streamedResponse);
+  //
+  //         if (response.statusCode == 200) {
+  //           print("Direct order successfully confirmed for ${product['Product_name']}");
+  //           print("Response body: ${response.body}");
+  //         } else {
+  //           print("Failed to confirm direct order: ${response.statusCode}");
+  //           print("Response body: ${response.body}");
+  //           throw Exception("Direct order confirmation failed with status ${response.statusCode}");
+  //         }
+  //       }
+  //     }
+  //   } catch (e) {
+  //     print("Error confirming order: $e");
+  //   }
+  // }
 
   void _openCheckout() {
     // Prepare Razorpay options based on fetched products
