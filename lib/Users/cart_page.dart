@@ -480,23 +480,7 @@ class _CartScreenState extends State<CartScreen> {
     final vendorid = item['vendor_id'];
 
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                CheckoutScreen(
-                  productId: productId,
-                  productName: productName,
-                  productPrice: currentPrice,
-                  description: description,
-                  imageUrl: imageUrl,
-                  quantity: quantity,
-                  vendorid: vendorid,
-                ),
-          ),
-        );
-      },
+
       child: Card(
         elevation: 2,
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),

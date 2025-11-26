@@ -175,20 +175,23 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                           ? FileImage(avatarImage!)
                           : null,
                       child: avatarImage == null
-                          ? Icon(Icons.camera, size: 50, color: Colors.white,)
+                          ? Icon(Icons.image, size: 50, color: Colors.white,)
                           : null,
                     ),
                     Positioned(
                       bottom: 0,
                       right: 0,
                       child: IconButton(
-                        icon: Icon(Icons.camera_alt, color: Colors.white,),
+                        icon: Icon(Icons.camera_alt, color: Colors.grey),
                         onPressed: _pickImage,
                       ),
                     ),
                   ],
                 ),
               ),
+             SizedBox(height: 10),
+
+              Text('Please Upload Atleast 3 Imgaes', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Colors.red)),
               SizedBox(height: 20),
 
               // Category Name

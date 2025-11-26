@@ -259,42 +259,42 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         ),
         backgroundColor: Appcolor.Appbarcolor,
         elevation: 0,
-        actions: [
-          ElevatedButton.icon(
-            onPressed: () {
-              Map<String, dynamic> statusDetails = {
-                'id': widget.orderId,
-                'status': orderItems.isNotEmpty
-                    ? orderItems[0]['status'] ?? '1'
-                    : '1',
-                'date_created': orderItems.isNotEmpty
-                    ? orderItems[0]['date_created'] ??
-                    orderItems[0]['created_at'] ?? DateTime.now().toString()
-                    : DateTime.now().toString(),
-                'payment_method': orderItems.isNotEmpty
-                    ? orderItems[0]['payment_method'] ?? 'Cash on Delivery'
-                    : 'Cash on Delivery',
-              };
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      OrderStatusScreen(orderDetails: statusDetails),
-                ),
-              );
-            },
-            icon: Icon(Icons.info_outline, color: Colors.white),
-            label: Text(
-              'Show Status',
-              style: TextStyle(color: Colors.white),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-            ),
-          ),
-        ],
+        // actions: [
+        //   ElevatedButton.icon(
+        //     onPressed: () {
+        //       Map<String, dynamic> statusDetails = {
+        //         'id': widget.orderId,
+        //         'status': orderItems.isNotEmpty
+        //             ? orderItems[0]['status'] ?? '1'
+        //             : '1',
+        //         'date_created': orderItems.isNotEmpty
+        //             ? orderItems[0]['date_created'] ??
+        //             orderItems[0]['created_at'] ?? DateTime.now().toString()
+        //             : DateTime.now().toString(),
+        //         'payment_method': orderItems.isNotEmpty
+        //             ? orderItems[0]['payment_method'] ?? 'Cash on Delivery'
+        //             : 'Cash on Delivery',
+        //       };
+        //
+        //       Navigator.push(
+        //         context,
+        //         MaterialPageRoute(
+        //           builder: (context) =>
+        //               OrderStatusScreen(orderDetails: statusDetails),
+        //         ),
+        //       );
+        //     },
+        //     icon: Icon(Icons.info_outline, color: Colors.white),
+        //     label: Text(
+        //       'Show Status',
+        //       style: TextStyle(color: Colors.white),
+        //     ),
+        //     style: ElevatedButton.styleFrom(
+        //       backgroundColor: Colors.transparent,
+        //       elevation: 0,
+        //     ),
+        //   ),
+        // ],
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator(
@@ -473,13 +473,60 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                         ],
                       ),
                     ),
-                    Text(
-                      '₹${itemTotal.toStringAsFixed(2)}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    Expanded(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          '₹${itemTotal.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        SizedBox(height: 8),
+
+                        TextButton(
+                              onPressed: () {
+                                Map<String, dynamic> statusDetails = {
+                                  'id': widget.orderId,
+                                  'status': orderItems.isNotEmpty
+                                      ? orderItems[0]['status'] ?? '1'
+                                      : '1',
+                                  'date_created': orderItems.isNotEmpty
+                                      ? orderItems[0]['date_created'] ??
+                                      orderItems[0]['created_at'] ?? DateTime.now().toString()
+                                      : DateTime.now().toString(),
+                                  'payment_method': orderItems.isNotEmpty
+                                      ? orderItems[0]['payment_method'] ?? 'Cash on Delivery'
+                                      : 'Cash on Delivery',
+                                };
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        OrderStatusScreen(orderDetails: statusDetails),
+                                  ),
+                                );
+                              },
+                          child: Text(
+                            "Show Status",
+                            style: TextStyle(
+                              color: Colors.green,        // text color
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        )
+
+                      ],
+                    )
+                    )
+
+                    
+
                   ],
                 ),
               );
