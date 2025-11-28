@@ -8,6 +8,7 @@ import '../main.dart';
 import 'home_page.dart';import 'package:flutter/services.dart'; // For Clipboard
 import 'package:maligaijaman/apiconstants.dart';
 import 'package:maligaijaman/appcolors.dart';
+import 'login_page.dart';
 
 
 class Review {
@@ -48,7 +49,8 @@ class CheckoutScreen extends StatefulWidget {
   final int quantity;
   final String imageUrl;
   final String description;
-  final String vendorid;
+  final String? vendorid;
+
 
 
   const CheckoutScreen({
@@ -76,6 +78,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   String? _jwt;
   String? _secretKey;
   String? _username;
+  String? _userid;
   final TextEditingController _reviewController = TextEditingController();
 
   List<Review> reviews = [];
@@ -102,8 +105,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     _jwt = await _storage.read(key: 'jwt');
     _secretKey = await _storage.read(key: 'key');
     _username = await _storage.read(key: 'name');
+     _userid = await _storage.read(key: 'user_id');
 
-    print(_jwt);
+    print("jwt is$_jwt");
     print(_secretKey);
     print(_username);
   }
@@ -120,7 +124,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         key: "product_price", value: widget.productPrice.toString());
     await _storage.write(key: "product_quantity", value: quantity.toString());
     await _storage.write(key: "product_image", value: widget.imageUrl);
-    await _storage.write(key: "vendor_id", value: widget.vendorid);
+    await _storage.write(key: "vendor_id", value: widget.vendorid ?? '');
     print("Product Details stored in Secure Storage.");
   }
 
@@ -139,12 +143,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       setState(() {
         isLoadingReviews = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error loading reviews: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text('Error loading reviews: $e'),
+      //     backgroundColor: Colors.red,
+      //   ),
+      // );
     }
   }
 
@@ -238,38 +242,42 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           );
         }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Server error: ${response.statusCode}'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     content: Text('Server error: ${response.statusCode}'),
+        //     backgroundColor: Colors.red,
+        //   ),
+        // );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error submitting review: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text('Error submitting review: $e'),
+      //     backgroundColor: Colors.red,
+      //   ),
+      // );
     }
   }
 
   Future<void> addToCart(String productId, String productName,
       double productPrice, int qty) async {
-    if (_jwt == null || _secretKey == null) {
-      await _loadCredentials();
+    if (_jwt == null || _secretKey == null || _userid == null ) {
+      // await _loadCredentials();
+      print(_userid);
     }
 
-    if (_jwt == null || _secretKey == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please login to add items to cart'),
-          backgroundColor: Colors.red,
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Please login to add items to cart'),
+        backgroundColor: Colors.redAccent,
+        action: SnackBarAction(label: 'click here to login',textColor: Colors.white,
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen())
+              );
+            }
         ),
-      );
-      return;
-    }
+      ),
+    );
 
     try {
       final url = Uri.parse(
@@ -346,16 +354,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         ),
         backgroundColor: Appcolor.Appbarcolor,
         elevation: 2,
-        // actions: [
-        //   IconButton(
-        //     icon: Icon(Icons.favorite_border, color: Colors.white),
-        //     onPressed: () {},
-        //   ),
-        //   IconButton(
-        //     icon: Icon(Icons.share, color: Colors.white),
-        //     onPressed: () {},
-        //   ),
-        // ],
+
       ),
       body: Column(
         children: [
@@ -856,15 +855,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       onPressed: () async {
 
 
-                        if (_jwt == null || _secretKey == null) {
+                        if (_jwt == null || _secretKey == null || _userid == null) {
                           await _loadCredentials();
                         }
 
-                        if (_jwt == null || _secretKey == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Please login to proceed with purchase'),
-                              backgroundColor: Colors.yellow,
+                        if (_jwt == null || _secretKey == null || _userid == null) {
+                          SnackBar(
+                            content: const Text('Please login to add items to cart'),
+                            backgroundColor: Colors.redAccent,
+                            action: SnackBarAction(label: 'click here to login',textColor: Colors.white,
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen())
+                                  );
+                                }
                             ),
                           );
                           return;

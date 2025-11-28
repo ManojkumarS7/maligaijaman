@@ -394,39 +394,115 @@ class _VendorAddProductsPageState extends State<VendorAddProductsPage> {
               ),
               SizedBox(height: 20),
 
-              // Price
+              // // Price
+              // TextFormField(
+              //   controller: productPriceController,
+              //   decoration: InputDecoration(
+              //     labelText: 'Price',
+              //     border: OutlineInputBorder(),
+              //   ),
+              //   validator: (value) => value!.isEmpty ? 'Please enter price' : null,
+              //   keyboardType: TextInputType.number,
+              // ),
+              // SizedBox(height: 20),
+              //
+              // // Quantity
+              // TextFormField(
+              //   controller: productQuantityController,
+              //   decoration: InputDecoration(
+              //     labelText: 'Quantity',
+              //     border: OutlineInputBorder(),
+              //   ),
+              //   validator: (value) => value!.isEmpty ? 'Please enter Quantity' : null,
+              //   keyboardType: TextInputType.number,
+              // ),
+              // SizedBox(height: 20),
+              //
+              // // Stock
+              // TextFormField(
+              //   controller: productStockController,
+              //   decoration: InputDecoration(
+              //     labelText: 'Stock',
+              //     border: OutlineInputBorder(),
+              //   ),
+              //   validator: (value) => value!.isEmpty ? 'Please enter Stock' : null,
+              //   keyboardType: TextInputType.number,
+              // ),
+              // SizedBox(height: 20),
+
+
+// Price
               TextFormField(
                 controller: productPriceController,
                 decoration: InputDecoration(
                   labelText: 'Price',
+                  hintText: 'Enter product price',
+                  prefixText: '₹ ',
                   border: OutlineInputBorder(),
+                  helperText: 'Selling price per unit',
                 ),
                 validator: (value) => value!.isEmpty ? 'Please enter price' : null,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
               ),
               SizedBox(height: 20),
 
-              // Quantity
+// Quantity (Per Pack/Unit)
               TextFormField(
                 controller: productQuantityController,
                 decoration: InputDecoration(
-                  labelText: 'Quantity',
+                  labelText: 'Quantity per Pack',
+                  hintText: 'e.g., 100 (for 1kg pack)',
                   border: OutlineInputBorder(),
+                  helperText: 'Amount in each pack/unit (e.g., 500g, 1kg, 10pcs)',
+                  suffixIcon: Tooltip(
+                    message: 'This is the quantity/weight in each individual pack or unit',
+                    child: Icon(Icons.info_outline, size: 20),
+                  ),
                 ),
-                validator: (value) => value!.isEmpty ? 'Please enter Quantity' : null,
+                validator: (value) => value!.isEmpty ? 'Please enter quantity per pack' : null,
                 keyboardType: TextInputType.number,
               ),
               SizedBox(height: 20),
 
-              // Stock
+// Stock (Total Units Available)
               TextFormField(
                 controller: productStockController,
                 decoration: InputDecoration(
-                  labelText: 'Stock',
+                  labelText: 'Stock Available',
+                  hintText: 'e.g., 100 (units in stock)',
                   border: OutlineInputBorder(),
+                  helperText: 'Total number of packs/units available to sell',
+                  suffixIcon: Tooltip(
+                    message: 'How many packs/units do you have in inventory?',
+                    child: Icon(Icons.inventory_2_outlined, size: 20),
+                  ),
                 ),
-                validator: (value) => value!.isEmpty ? 'Please enter Stock' : null,
+                validator: (value) => value!.isEmpty ? 'Please enter stock quantity' : null,
                 keyboardType: TextInputType.number,
+              ),
+              SizedBox(height: 20),
+
+// Optional: Add an example card to further clarify
+              Card(
+                color: Colors.blue.shade50,
+                child: Padding(
+                  padding: EdgeInsets.all(12),
+                  child: Row(
+                    children: [
+                      Icon(Icons.lightbulb_outline, color: Colors.blue.shade700, size: 20),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          'Example: Rice pack of 1kg at ₹50, with 100 packs in stock\n'
+                              '• Price: 50\n'
+                              '• Quantity per Pack: 1 (kg)\n'
+                              '• Stock Available: 100 (packs)',
+                          style: TextStyle(fontSize: 12, color: Colors.blue.shade900),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               SizedBox(height: 20),
 

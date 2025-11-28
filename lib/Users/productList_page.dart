@@ -65,6 +65,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
   final _storage = const FlutterSecureStorage();
   String? _jwt;
   String? _secretKey;
+  String? _userid;
   List<dynamic> _allProducts = [];
   List<dynamic> _filteredProducts = [];
   final Map<String, int> _quantities = {};
@@ -90,6 +91,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
   Future<void> _loadCredentials() async {
     _jwt = await _storage.read(key: 'jwt');
     _secretKey = await _storage.read(key: 'key');
+    _userid = await _storage.read(key: 'user_id');
     setState(() {});
   }
 
@@ -151,12 +153,17 @@ class _ProductListScreenState extends State<ProductListScreen> {
     if (_jwt == null || _secretKey == null) {
       await _loadCredentials();
     }
-    if (_jwt == null || _secretKey == null) {
+    if (_userid == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please login to add items to cart'),
-          backgroundColor: Colors.orange,
-
+        SnackBar(
+          content: const Text('Please login to add items to cart'),
+          backgroundColor: Colors.redAccent,
+       action: SnackBarAction(label: 'click here to login',textColor: Colors.white,
+           onPressed: () {
+         Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen())
+         );
+           }
+       ),
         ),
       );
       return; // Exit the function early
@@ -258,17 +265,18 @@ class _ProductListScreenState extends State<ProductListScreen> {
     if (_jwt == null || _secretKey == null) {
       await _loadCredentials();
     }
-
-    if (_jwt == null || _secretKey == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please login to manage wishlist'),
-          backgroundColor: Colors.red,
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Please login to add items to cart'),
+        backgroundColor: Colors.redAccent,
+        action: SnackBarAction(label: 'click here to login',textColor: Colors.white,
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen())
+              );
+            }
         ),
-      );
-      return;
-    }
-
+      ),
+    );
     final product = _allProducts.firstWhere((p) => p['id'] == productId, orElse: () => null);
     if (product == null) return;
 

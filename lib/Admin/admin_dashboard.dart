@@ -9,6 +9,7 @@ import 'admin_subcategory.dart';
 import 'admin_vendorlist.dart';
 import 'admin_addOffers.dart';
 import 'package:maligaijaman/Users/home_page.dart';
+import 'admin_orderslist_screen.dart';
 
 
 class AdminDashboard extends StatelessWidget {
@@ -227,6 +228,15 @@ class AdminDashboard extends StatelessWidget {
                     const Color(0xFF8BC34A),
                     VendorApprovalScreen(),
                     '18',
+                  ),
+                  _buildModernCard(
+                    context,
+                    'Orders',
+                    Icons.store_rounded,
+                    const Color(0xFF558B2F), // Olive green
+                    const Color(0xFF8BC34A),
+                    AdminOrderslistScreen(),
+                    '22',
                   ),
                   _buildModernCard(
                     context,

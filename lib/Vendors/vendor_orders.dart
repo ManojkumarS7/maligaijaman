@@ -183,38 +183,52 @@ class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
   // Helper function to get order status text
   String getStatusText(String status) {
     switch (status) {
-      case "1":
-        return "Order placed";
-      case "2":
+      case "Created":
+        return "Created";
+      case "Pending":
+        return "Pending";
+      case "Confirmed":
+        return "Confirmed";
+      case "Processing":
         return "Processing";
-      case "3":
+      case "Allocated":
+        return "Allocated";
+      case "On Hold":
+        return "On Hold";
+      case "Dispatch":
+        return "Dispatch";
+      case "Shipped":
         return "Shipped";
-      case "4":
+      case "Delivered":
         return "Delivered";
-      case "5":
+      case "Cancelled":
         return "Cancelled";
+      case "Returned":
+        return "Returned";
+      case "Refunded":
+        return "Refunded";
       default:
-        return "Order placed";
+        return "Created";
     }
   }
 
-  // Helper method to determine status color
-  Color _getStatusColor(String status) {
-    switch (status) {
-      case "1":
-        return Colors.blue; // Order placed
-      case "2":
-        return Colors.orange; // Processing
-      case "3":
-        return Colors.purple; // Shipped
-      case "4":
-        return Colors.green; // Delivered
-      case "5":
-        return Colors.red; // Cancelled
-      default:
-        return Colors.blue;
-    }
-  }
+  // // Helper method to determine status color
+  // Color _getStatusColor(String status) {
+  //   switch (status) {
+  //     case "1":
+  //       return Colors.blue; // Order placed
+  //     case "2":
+  //       return Colors.orange; // Processing
+  //     case "3":
+  //       return Colors.purple; // Shipped
+  //     case "4":
+  //       return Colors.green; // Delivered
+  //     case "5":
+  //       return Colors.red; // Cancelled
+  //     default:
+  //       return Colors.blue;
+  //   }
+  // }
 
   // Add a function to retry loading orders
   void retryFetchOrders() {
@@ -266,65 +280,105 @@ class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
     String selectedStatus = currentStatus;
 
     showDialog(
+
       context: context,
       builder: (context) =>
           StatefulBuilder(
+
             builder: (context, setState) {
               return AlertDialog(
+                backgroundColor: Colors.white,
                 title: Text('Update Order Status'),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('Order #$orderId'),
-                    SizedBox(height: 20),
 
-                    // Radio buttons for status selection
-                    RadioListTile<String>(
-                      title: Text('Order Placed'),
-                      value: "1",
-                      groupValue: selectedStatus,
-                      onChanged: (value) {
-                        setState(() => selectedStatus = value!);
-                      },
+                 content:  SingleChildScrollView(
+
+                    child: IntrinsicHeight(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text('Order #$orderId'),
+                          SizedBox(height: 10),
+                          RadioListTile(
+                            title: Text('Created'),
+                            value: "Created",
+                            groupValue: selectedStatus,
+                            onChanged: (value) => setState(() => selectedStatus = value!),
+                          ),
+                          RadioListTile(
+                            title: Text('Pending'),
+                            value: "Pending",
+                            groupValue: selectedStatus,
+                            onChanged: (value) => setState(() => selectedStatus = value!),
+                          ),
+                          RadioListTile(
+                            title: Text('Confirmed'),
+                            value: "Confirmed",
+                            groupValue: selectedStatus,
+                            onChanged: (value) => setState(() => selectedStatus = value!),
+                          ),
+                          RadioListTile(
+                            title: Text('Processing'),
+                            value: "Processing",
+                            groupValue: selectedStatus,
+                            onChanged: (value) => setState(() => selectedStatus = value!),
+                          ),
+                          RadioListTile(
+                            title: Text('Allocated'),
+                            value: "Allocated",
+                            groupValue: selectedStatus,
+                            onChanged: (value) => setState(() => selectedStatus = value!),
+                          ),
+                          RadioListTile(
+                            title: Text('On Hold'),
+                            value: "On Hold",
+                            groupValue: selectedStatus,
+                            onChanged: (value) => setState(() => selectedStatus = value!),
+                          ),
+                          RadioListTile(
+                            title: Text('Dispatch'),
+                            value: "Dispatch",
+                            groupValue: selectedStatus,
+                            onChanged: (value) => setState(() => selectedStatus = value!),
+                          ),
+                          RadioListTile(
+                            title: Text('Shipped'),
+                            value: "Shipped",
+                            groupValue: selectedStatus,
+                            onChanged: (value) => setState(() => selectedStatus = value!),
+                          ),
+                          RadioListTile(
+                            title: Text('Delivered'),
+                            value: "Delivered",
+                            groupValue: selectedStatus,
+                            onChanged: (value) => setState(() => selectedStatus = value!),
+                          ),
+                          RadioListTile(
+                            title: Text('Cancelled'),
+                            value: "Cancelled",
+                            groupValue: selectedStatus,
+                            onChanged: (value) => setState(() => selectedStatus = value!),
+                          ),
+                          RadioListTile(
+                            title: Text('Returned'),
+                            value: "Returned",
+                            groupValue: selectedStatus,
+                            onChanged: (value) => setState(() => selectedStatus = value!),
+                          ),
+                          RadioListTile(
+                            title: Text('Refunded'),
+                            value: "Refunded",
+                            groupValue: selectedStatus,
+                            onChanged: (value) => setState(() => selectedStatus = value!),
+                          ),
+                        ],
+                      ),
                     ),
-                    RadioListTile<String>(
-                      title: Text('Processing'),
-                      value: "2",
-                      groupValue: selectedStatus,
-                      onChanged: (value) {
-                        setState(() => selectedStatus = value!);
-                      },
-                    ),
-                    RadioListTile<String>(
-                      title: Text('Shipped'),
-                      value: "3",
-                      groupValue: selectedStatus,
-                      onChanged: (value) {
-                        setState(() => selectedStatus = value!);
-                      },
-                    ),
-                    RadioListTile<String>(
-                      title: Text('Delivered'),
-                      value: "4",
-                      groupValue: selectedStatus,
-                      onChanged: (value) {
-                        setState(() => selectedStatus = value!);
-                      },
-                    ),
-                    RadioListTile<String>(
-                      title: Text('Cancelled'),
-                      value: "5",
-                      groupValue: selectedStatus,
-                      onChanged: (value) {
-                        setState(() => selectedStatus = value!);
-                      },
-                    ),
-                  ],
-                ),
+                  ),
+
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: Text('Cancel'),
+                    child: Text('Cancel',style: TextStyle(color: Colors.redAccent),),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -347,7 +401,6 @@ class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
     );
   }
 
-  // Method to update order status in the database
   Future<void> _updateOrderStatus(String orderId, String newStatus) async {
     try {
       setState(() {
@@ -357,7 +410,6 @@ class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
       final String? vendorId = await _storage.read(key: 'vendor_id');
 
       if (vendorId == null) {
-        // Show error
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Vendor ID not found')),
         );
@@ -367,32 +419,40 @@ class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
         return;
       }
 
-      // Create the URL for the API endpoint
-      final url = Uri.parse(
-          "${Appconfig.baseurl}pi/update_order_status.php");
+      final url = Uri.parse("${Appconfig.baseurl}api/update_vendor_order_status.php");
 
-      // Create the request body
-      Map<String, String> requestBody = {
-        'vendor_id': vendorId,
-        'order_id': orderId,
-        'status': newStatus,
+      print("Request URL: $url");
+
+      // Prepare form-data body
+      final Map<String, String> bodyData = {
+        "vendor_id": vendorId,
+        "order_id": orderId,
+        "order_status": newStatus,
       };
 
-      // Send the POST request
-      final response = await http.post(
+      final response = await http
+          .post(
         url,
-        body: requestBody,
-      ).timeout(
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Accept": "application/json",
+        },
+        body: bodyData,
+      )
+          .timeout(
         const Duration(seconds: 15),
         onTimeout: () {
-          // Handle timeout
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Request timed out. Please try again.')),
           );
           setState(() {
             isLoading = false;
           });
-          return http.Response('{"status":"error","message":"Timeout"}', 408);
+
+          return http.Response(
+            '{"status":"error","message":"Timeout"}',
+            408,
+          );
         },
       );
 
@@ -400,28 +460,24 @@ class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
 
       if (response.statusCode == 200) {
         try {
-          final dynamic data = json.decode(response.body);
+          final data = json.decode(response.body);
 
           if (data['status'] == 'success') {
-            // Show success message
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Order status updated successfully')),
             );
 
-            // Refresh order list to show updated status
             fetchOrders();
           } else {
-            // Show error message
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                  content: Text(data['message'] ?? 'Failed to update status')),
+              SnackBar(content: Text(data['message'] ?? 'Failed to update status')),
             );
             setState(() {
               isLoading = false;
             });
           }
         } catch (e) {
-          print("Error parsing update response: $e");
+          print("JSON Parse Error: $e");
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error updating order status')),
           );
@@ -430,24 +486,26 @@ class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
           });
         }
       } else {
-        // Handle error response
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to update status. Server error.')),
+          SnackBar(content: Text('Server error. Failed to update status.')),
         );
         setState(() {
           isLoading = false;
         });
       }
     } catch (e) {
-      print("Error updating order status: $e");
+      print("Exception: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error updating order status')),
+        SnackBar(content: Text('Something went wrong')),
       );
       setState(() {
         isLoading = false;
       });
     }
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -569,7 +627,7 @@ class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
-                            color: _getStatusColor(status),
+                            // color: _getStatusColor(status),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
@@ -705,6 +763,7 @@ class _VendorOrdersScreenState extends State<VendorOrdersScreen> {
                             label: Text('Update Status'),
                             onPressed: () {
                               _showUpdateStatusDialog(orderID, status);
+
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color.fromRGBO(85, 139, 47, 1),

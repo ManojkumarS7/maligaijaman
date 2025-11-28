@@ -217,13 +217,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _loadUserProfile() async {
     try {
       // First check if user is logged in
-      final jwt = await _storage.read(key: 'jwt');
+      // final jwt = await _storage.read(key: 'jwt');
       final userid = await _storage.read(key: 'user_id');
 
-      print('JWT: $jwt'); // Debug
+      // print('JWT: $jwt'); // Debug
       print('User ID: $userid'); // Debug
 
-      if (jwt == null || userid == null || userid.isEmpty) {
+      if ( userid == null || userid.isEmpty) {
         // User is not logged in
         if (mounted) {
           setState(() {

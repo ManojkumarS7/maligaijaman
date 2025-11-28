@@ -22,11 +22,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   List<dynamic> orderItems = [];
   double subtotal = 0.0;
   double deliveryCharge = 40.0;
-  String orderStatus = "Processing";
+
   String? _jwt;
   String? _secretKey;
   String? _userid;
   String? _address;
+  String? OrderStatus;
 
   @override
   void initState() {
@@ -56,6 +57,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
       final url = Uri.parse(
           "${Appconfig.baseurl}api/conformorder.php?jwt=$jwt&secretkey=$secretKey");
+      print(url);
 
       final response = await http.get(url).timeout(
         const Duration(seconds: 15),
@@ -80,6 +82,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           try {
             final productPrice = item['price'] ?? item['product_price'] ?? '0';
             final quantity = item['Product_qty'] ?? item['quantity'] ?? '1';
+          OrderStatus = item['order_status'] ?? 'Processing';
+
+          print(OrderStatus);
 
             if (productPrice.toString().isNotEmpty) {
               price = double.parse(productPrice.toString());
@@ -95,22 +100,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           }
         }
 
-        String status = "Processing";
-        if (filtered.isNotEmpty) {
-          final statusCode = filtered[0]['status'] ?? '1';
-          if (statusCode == '2') {
-            status = "Shipped";
-          } else if (statusCode == '3') {
-            status = "Delivered";
-          } else if (statusCode == '4') {
-            status = "Cancelled";
-          }
-        }
-
         setState(() {
           orderItems = filtered;
           subtotal = total;
-          orderStatus = status;
+          OrderStatus = OrderStatus;
           isLoading = false;
         });
       } else {
@@ -259,42 +252,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         ),
         backgroundColor: Appcolor.Appbarcolor,
         elevation: 0,
-        // actions: [
-        //   ElevatedButton.icon(
-        //     onPressed: () {
-        //       Map<String, dynamic> statusDetails = {
-        //         'id': widget.orderId,
-        //         'status': orderItems.isNotEmpty
-        //             ? orderItems[0]['status'] ?? '1'
-        //             : '1',
-        //         'date_created': orderItems.isNotEmpty
-        //             ? orderItems[0]['date_created'] ??
-        //             orderItems[0]['created_at'] ?? DateTime.now().toString()
-        //             : DateTime.now().toString(),
-        //         'payment_method': orderItems.isNotEmpty
-        //             ? orderItems[0]['payment_method'] ?? 'Cash on Delivery'
-        //             : 'Cash on Delivery',
-        //       };
-        //
-        //       Navigator.push(
-        //         context,
-        //         MaterialPageRoute(
-        //           builder: (context) =>
-        //               OrderStatusScreen(orderDetails: statusDetails),
-        //         ),
-        //       );
-        //     },
-        //     icon: Icon(Icons.info_outline, color: Colors.white),
-        //     label: Text(
-        //       'Show Status',
-        //       style: TextStyle(color: Colors.white),
-        //     ),
-        //     style: ElevatedButton.styleFrom(
-        //       backgroundColor: Colors.transparent,
-        //       elevation: 0,
-        //     ),
-        //   ),
-        // ],
+
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator(
@@ -366,14 +324,14 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 4),
-              Text(
-                'Status: $orderStatus',
-                style: TextStyle(
-                  color: _getStatusColor(orderStatus),
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              // SizedBox(height: 4),
+              // Text(
+              //   'Status: $OrderStatus',
+              //   style: TextStyle(
+              //     // color: _getStatusColor(OrderStatus),
+              //     fontWeight: FontWeight.w500,
+              //   ),
+              // ),
               SizedBox(height: 4),
               Text(
                 'Date: ${orderItems.isNotEmpty
@@ -512,7 +470,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                 );
                               },
                           child: Text(
-                            "Show Status",
+                            "Status: $OrderStatus",
                             style: TextStyle(
                               color: Colors.green,        // text color
                               fontSize: 14,
